@@ -3,10 +3,6 @@ import 'package:fooderapp/pages/error_page.dart';
 import 'package:fooderapp/pages/home_page_content_screen.dart';
 import 'package:fooderapp/pages/newsfeed_screen.dart';
 import 'package:fooderapp/pages/search_screen.dart';
-import 'package:fooderapp/theme/font_theme.dart';
-import 'package:fooderapp/utils/helpers.dart';
-import 'package:fooderapp/widgets/home_big_tile.dart';
-import 'package:fooderapp/widgets/home_page_recent_tile.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});

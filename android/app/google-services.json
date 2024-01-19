@@ -1,0 +1,82 @@
+{
+  "project_info": {
+    "project_number": "377298055412",
+    "project_id": "fooder-7b6a7",
+    "storage_bucket": "fooder-7b6a7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:377298055412:android:a5cf6afec12c779edb6ea1",
+        "android_client_info": {
+          "package_name": "com.example.fooderapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "377298055412-jrd8gasrlsfnn1va1obfsp15skr7t9cj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDJBIBIFvzrTkzurt-Icg_qTqNxX2G7EDs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "377298055412-jrd8gasrlsfnn1va1obfsp15skr7t9cj.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "377298055412-meitnud5l83lslotrc0p4bc7r9vpvlc4.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.spotifyClone"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:377298055412:android:7b81074fe08bbe07db6ea1",
+        "android_client_info": {
+          "package_name": "com.example.spotify_clone"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "377298055412-jrd8gasrlsfnn1va1obfsp15skr7t9cj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDJBIBIFvzrTkzurt-Icg_qTqNxX2G7EDs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "377298055412-jrd8gasrlsfnn1va1obfsp15skr7t9cj.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "377298055412-meitnud5l83lslotrc0p4bc7r9vpvlc4.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.spotifyClone"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

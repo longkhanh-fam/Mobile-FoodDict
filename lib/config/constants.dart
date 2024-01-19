@@ -2,9 +2,13 @@
 import 'package:flutter/material.dart';
 import 'package:fooderapp/config/colors/colors.dart';
 
+const String baseUrl = 'http://192.168.122.1:3001/';
+
 const String homePage = '/';
+const String loginPage = '/login';
 const String errorPage = 'error/';
 const String albumDetailsPage = 'albumDetailsPage/';
+const String profilePage = 'profilePage/';
 
 // Home Page constants
 
