@@ -49,8 +49,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         ClipRRect(
                           borderRadius: BorderRadius.circular(100),
                           child: Image.network(
-                            user.imageUrl ??
-                                "https://sm.ign.com/ign_nordic/cover/a/avatar-gen/avatar-generations_prsz.jpg",
+                            user.imageUrl ?? defaultProfileImageUrl,
                             height: 150.0,
                             width: 150.0,
                           ),
@@ -77,19 +76,22 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                     Row(
                       children: [
-                        OutlinedButton(
-                          onPressed: () async {
-                            final res = await Navigator.of(context).push(
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        ProfileEditScreen(profile: user)));
-                            if (res == true) {
-                              setState(() {
-                                _profile = getProfile();
-                              });
-                            }
-                          },
-                          child: const Text('Edit'),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(20, 8, 0, 0),
+                          child: OutlinedButton(
+                            onPressed: () async {
+                              final res = await Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          ProfileEditScreen(profile: user)));
+                              if (res == true) {
+                                setState(() {
+                                  _profile = getProfile();
+                                });
+                              }
+                            },
+                            child: const Text('Edit'),
+                          ),
                         ),
                       ],
                     ),
