@@ -30,7 +30,10 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  image_picker: ^1.0.7
   provider: ^6.0.5
+  tflite_flutter: ^0.10.4
+  image: ^3.0.1
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -61,6 +64,7 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/images/
+    - assets/food_model.tflite
 
   # To add assets to your application, add an assets section, like this:
   # assets:

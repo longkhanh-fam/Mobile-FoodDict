@@ -88,8 +88,8 @@ class _AlbumDetailsPageState extends State<AlbumDetailsPage> {
                     ],
                   ),
                   const VerticalSpacer(height: 5),
-                  Column(
-                    children: const <Widget>[
+                  const Column(
+                    children: <Widget>[
                       // Song tile
                       SongTile(),
                       SongTile(), SongTile(), SongTile(), SongTile(),

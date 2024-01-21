@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fooderapp/config/constants.dart';
 import 'package:fooderapp/utils/helpers.dart';
+import 'package:fooderapp/pages/details_dish_page.dart';
 
 class HomeBigTile extends StatelessWidget {
   final String title;
@@ -11,7 +12,13 @@ class HomeBigTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => Navigator.of(context).pushNamed(albumDetailsPage),
+      // onTap: () => Navigator.of(context).pushNamed(albumDetailsPage),
+      onTap: () {
+        // Đoạn mã sau sẽ chuyển đến trang DetailsDishPage
+        Navigator.of(context).push(
+          MaterialPageRoute(builder: (context) => DetailsDishPage()),
+        );
+      },
       child: SizedBox(
         width: 150,
         child: Column(

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class NewsFeedScreen extends StatefulWidget {
+  const NewsFeedScreen({super.key});
+
   @override
   _NewsFeedScreenState createState() => _NewsFeedScreenState();
 }
@@ -9,15 +11,14 @@ class _NewsFeedScreenState extends State<NewsFeedScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      
       appBar: AppBar(
         backgroundColor: Colors.black,
-        title: Text('Foodfeeds'),
+        title: const Text('Foodfeeds'),
       ),
       body: ListView.builder(
         itemCount: 10, // This should be the length of your data list
         itemBuilder: (context, index) {
-          return NewsFeedItem(); // Custom widget for newsfeed item
+          return const NewsFeedItem(); // Custom widget for newsfeed item
         },
       ),
     );
@@ -25,6 +26,8 @@ class _NewsFeedScreenState extends State<NewsFeedScreen> {
 }
 
 class NewsFeedItem extends StatelessWidget {
+  const NewsFeedItem({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -32,14 +35,14 @@ class NewsFeedItem extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          ListTile(
+          const ListTile(
             leading: CircleAvatar(
-              // Profile picture
-            ),
+                // Profile picture
+                ),
             title: Text('User Name'), // User name
             subtitle: Text('Time ago'), // Post time
           ),
-          Padding(
+          const Padding(
             padding: EdgeInsets.all(8.0),
             child: Text('Post content goes here...'), // Post content
           ),
@@ -50,15 +53,15 @@ class NewsFeedItem extends StatelessWidget {
           ButtonBar(
             children: <Widget>[
               TextButton(
-                child: Icon(Icons.thumb_up),
+                child: const Icon(Icons.thumb_up),
                 onPressed: () {/* Like action */},
               ),
               TextButton(
-                child: Icon(Icons.comment),
+                child: const Icon(Icons.comment),
                 onPressed: () {/* Comment action */},
               ),
               TextButton(
-                child: Icon(Icons.share),
+                child: const Icon(Icons.share),
                 onPressed: () {/* Share action */},
               ),
             ],

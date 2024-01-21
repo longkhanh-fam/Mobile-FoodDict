@@ -7,6 +7,7 @@ import 'package:fooderapp/theme/font_theme.dart';
 import 'package:fooderapp/utils/helpers.dart';
 import 'package:fooderapp/widgets/home_big_tile.dart';
 import 'package:fooderapp/widgets/home_page_recent_tile.dart';
+import 'package:fooderapp/pages/image_picker_screen.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -20,19 +21,19 @@ class _HomePageState extends State<HomePage> {
 
   final List<Widget> _screens = [
     HomePageContent(),
-    NewsFeedScreen(), 
+    const NewsFeedScreen(),
+    const ImagePickerScreen(),
     SearchScreen(),
-    ErrorPage(),
+    const ErrorPage(),
   ];
-
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(  
+    return Scaffold(
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         currentIndex: _currentNavItem,
-        items: const [                        
+        items: const [
           BottomNavigationBarItem(
               activeIcon: Icon(Icons.home),
               icon: Icon(Icons.home_outlined),
@@ -42,6 +43,10 @@ class _HomePageState extends State<HomePage> {
               label: 'Foodfeeds',
               activeIcon: Icon(Icons.food_bank_outlined)),
           BottomNavigationBarItem(
+              icon: Icon(Icons.camera),
+              label: 'Cam',
+              activeIcon: Icon(Icons.search_outlined)),
+          BottomNavigationBarItem(
               icon: Icon(Icons.search),
               label: 'Search',
               activeIcon: Icon(Icons.search_outlined)),
@@ -49,8 +54,6 @@ class _HomePageState extends State<HomePage> {
               icon: Icon(Icons.library_music_outlined),
               label: 'Library',
               activeIcon: Icon(Icons.library_music_rounded)),
-          
-              
         ],
         fixedColor: Colors.white,
         iconSize: 20,
