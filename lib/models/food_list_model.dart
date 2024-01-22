@@ -15,7 +15,7 @@ class FoodList {
     String imageUrl;
     int authorId;
     bool? isFavourite;
-    List<Food> foods;
+    List<FoodListFood> foods;
 
     FoodList({
         required this.id,
@@ -34,7 +34,7 @@ class FoodList {
         imageUrl: json["imageUrl"],
         authorId: json["authorId"],
         isFavourite: json["isFavourite"],
-        foods: List<Food>.from(json["foods"].map((x) => Food.fromJson(x))),
+        foods: List<FoodListFood>.from(json["foods"].map((x) => FoodListFood.fromJson(x))),
     );
 
     Map<String, dynamic> toJson() => {
@@ -48,20 +48,20 @@ class FoodList {
     };
 }
 
-class Food {
+class FoodListFood {
     int id;
     String title;
     List<String> images;
     String body;
 
-    Food({
+    FoodListFood({
         required this.id,
         required this.title,
         required this.images,
         required this.body,
     });
 
-    factory Food.fromJson(Map<String, dynamic> json) => Food(
+    factory FoodListFood.fromJson(Map<String, dynamic> json) => FoodListFood(
         id: json["id"],
         title: json["title"],
         images: List<String>.from(json["images"].map((x) => x)),

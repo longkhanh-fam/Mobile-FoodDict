@@ -6,14 +6,14 @@ import 'package:fooderapp/pages/detail_dish_screen.dart';
 import 'package:fooderapp/utils/helpers.dart';
 
 class FoodWidget extends StatelessWidget {
-  final Food food;
+  final FoodListFood food;
   const FoodWidget(this.food, {super.key});
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => Navigator.of(context)
-          .push(MaterialPageRoute(builder: (_) => DetailsDishScreen())),
+      // onTap: () => Navigator.of(context)
+      //     .push(MaterialPageRoute(builder: (_) => DetailsDishScreen())),
       child: Padding(
         padding: const EdgeInsets.all(12.0),
         child: Row(

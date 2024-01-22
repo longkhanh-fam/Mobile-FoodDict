@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 
 class NutritionFactCard extends StatelessWidget {
@@ -16,7 +15,7 @@ class NutritionFactCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Center( // Center the title text
+            Center(
               child: Text(
                 'Nutrition Facts',
                 style: TextStyle(
@@ -29,29 +28,30 @@ class NutritionFactCard extends StatelessWidget {
             const SizedBox(height: 10.0),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: nutritionFacts.entries.map((entry) {
+              children: nutritionFacts.entries
+                  .where((entry) => entry.value != null)
+                  .map((entry) {
                 return Padding(
                   padding: const EdgeInsets.only(bottom: 8.0),
-                  child: RichText(
-                    text: TextSpan(
-                      children: [
-                        TextSpan(
-                          text: "${entry.key}: ",
-                          style: TextStyle(
-                            fontSize: 16.0,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.deepPurple,
-                          ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "${entry.key}: ",
+                        style: TextStyle(
+                          fontSize: 16.0,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.deepPurple,
                         ),
-                        TextSpan(
-                          text: entry.value,
-                          style: TextStyle(
-                            fontSize: 16.0,
-                            color: Colors.white ,
-                          ),
+                      ),
+                      Text(
+                        entry.value!.toString(), // Assume the value is not null due to the filtering
+                        style: TextStyle(
+                          fontSize: 16.0,
+                          color: Colors.white,
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 );
               }).toList(),

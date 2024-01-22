@@ -18,6 +18,7 @@ class Food {
   NutritionFact? nutritionFact;
   int? authorId;
   DateTime? createdAt;
+  bool? isLiked;
 
   Food({
     required this.id,
@@ -29,6 +30,8 @@ class Food {
     this.nutritionFact,
     this.authorId,
     this.createdAt,
+    this.isLiked
+    
   });
 
   factory Food.fromJson(Map<String, dynamic> json) => Food(
@@ -60,13 +63,14 @@ class NutritionFact {
   String? sugar;
   String? sodium;
   String? protein;
-  int? calories;
+  String? calories;
   String? totalFat;
   String? cholesterol;
   String? servingSize;
   String? dietaryFiber;
   String? saturatedFat;
   String? totalCarbohydrate;
+  
 
   NutritionFact({
     this.sugar,
@@ -81,11 +85,24 @@ class NutritionFact {
     this.totalCarbohydrate,
   });
 
+  static String _parseCalories(dynamic calories) {
+    if (calories is int) {
+      // If calories is an integer, convert it to a string
+      return calories.toString();
+    } else if (calories is String) {
+      // If calories is already a string, use it as is
+      return calories;
+    } else {
+      // Handle other cases, e.g., null or unexpected types
+      return ''; // Provide a default value or handle it according to your needs
+    }
+  }
+
   factory NutritionFact.fromJson(Map<String, dynamic> json) => NutritionFact(
         sugar: json["sugar"],
         sodium: json["sodium"],
         protein: json["protein"],
-        calories: json["calories"],
+        calories: _parseCalories(json["calories"]),
         totalFat: json["total_fat"],
         cholesterol: json["cholesterol"],
         servingSize: json["serving_size"],

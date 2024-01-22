@@ -1,72 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
+import 'package:fooderapp/models/food_model.dart';
 import 'package:fooderapp/theme/font_theme.dart';
 import 'package:fooderapp/utils/helpers.dart';
 import 'package:fooderapp/widgets/nutrition_fact_card.dart';
 import 'package:fooderapp/widgets/recipe_card.dart';
 
-Map<String, dynamic> dish =
+import '../config/colors/colors.dart';
 
-{
-    "id": 4,
-    "title": "Banh xeo`",
-    "body": "Morem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eu turpis molestie, dictum est a, mattis tellus. Sed dignissim, metus nec fringilla accumsan, risus sem sollicitudin lacus, ut interdum tellus elit sed risus. Maecenas eget condimentum velit, sit amet feugiat lectus. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Praesent auctor purus luctus enim egestas, ac scelerisque ante pulvinar. Donec ut rhoncus ex. Suspendisse ac rhoncus nisl, eu tempor urna. ",
-    "imageUrl": 
-      "https://images.unsplash.com/photo-1575936123452-b67c3203c357"
-    ,
-    "ingredients": [
-      "1 rack of baby back ribs",
-      "1 cup of BBQ sauce",
-      "2 cloves of minced garlic",
-      "1 tsp of paprika",
-      "1 tsp of salt",
-      "1 tsp of black pepper"
-    ],
-    "recipe": [
-      "Cut the hard-boiled eggs in half lengthwise and remove the yolks.",
-      "Place the yolks in a bowl and mash them with a fork.",
-      "Add in mayonnaise, mustard, apple cider vinegar, salt, and pepper. Mix well.",
-      "Scoop the yolk mixture into the egg white halves.",
-      "Sprinkle with paprika for garnish.",
-      "Chill in the fridge for at least 30 minutes before serving.",
-            "Sprinkle with paprika for garnish.",
-      "Chill in the fridge for at least 30 minutes before serving.",
-            "Sprinkle with paprika for garnish.",
-                  "Chill in the fridge for at least 30 minutes before serving.",
-            "Sprinkle with paprika for garnish.",
-                  "Cut the hard-boiled eggs in half lengthwise and remove the yolks.",
-      "Place the yolks in a bowl and mash them with a fork.",
-      "Add in mayonnaise, mustard, apple cider vinegar, salt, and pepper. Mix well.",
-      "Scoop the yolk mixture into the egg white halves.",
-      "Sprinkle with paprika for garnish.",
-      "Chill in the fridge for at least 30 minutes before serving.",
-            "Sprinkle with paprika for garnish.",
-      "Chill in the fridge for at least 30 minutes before serving.",
-            "Sprinkle with paprika for garnish.",
-                  "Chill in the fridge for at least 30 minutes before serving.",
-            "Sprinkle with paprika for garnish.",
-      
-    ],
-    "nutrition_fact": {
-      "Fat": "21g",
-      "Fiber": "1g",
-      "Sugar": "13g",
-      "Sodium": "599mg",
-      "Protein": "20g",
-      "Calories": "343",
-      "Cholesterol": "74mg",
-      "Carbohydrate": "16g",
-      "Saturated Fat": "6g"
-    },
-    "authorId": 1,
-    "createdAt": "2024-01-20T06:06:50.349Z",
-    "color": const Color(0xFF372A46),
-    "playerColor": const Color(0xFFBD94ED),
-    "playerColor2": const Color.fromARGB(255, 151, 127, 180),
-  };
 
 class DetailsDishScreen extends StatefulWidget {
-  const DetailsDishScreen({super.key});
+  final Food dish;
+
+  const DetailsDishScreen({required this.dish, Key? key}) : super(key: key);
 
   @override
   _DetailsDishScreenState createState() => _DetailsDishScreenState();
@@ -80,6 +26,7 @@ class _DetailsDishScreenState extends State<DetailsDishScreen> {
         child: Column(
           children: [
             DetailsDish(
+              dish: widget.dish,
               closeOpen: () {
                 // Add your closeOpen logic here
                 // This is just a placeholder for the callback
@@ -96,29 +43,35 @@ class DetailsDish extends StatefulWidget {
   const DetailsDish({
     Key? key,
     required this.closeOpen,
+    required this.dish,
   }) : super(key: key);
+
   final VoidCallback closeOpen;
-
-
-
+  final Food dish;
 
   @override
   State<DetailsDish> createState() => _DetailsDishState();
 }
+
 class _DetailsDishState extends State<DetailsDish> {
   bool isLiked = false;
-  int currentCardIndex = 0; // Track the index of the current card
-  
+  int currentCardIndex = 0;
+  late Food dish; // Declare dish here
+
   // List of different RecipeCard widgets
-    List cardContentsList = [
-      RecipeCard(title: 'Ingredients', recipe: dish['ingredients'] ?? []  ),
-      RecipeCard(title: 'Recipe', recipe: dish['recipe'] ?? []  ),
-      NutritionFactCard(nutritionFacts: dish['nutrition_fact'])
+  late List<dynamic> cardContentsList;
 
-
-  ];
-
-
+  @override
+  void initState() {
+    super.initState();
+    // Initialize dish and cardContentsList in the initState method
+    dish = widget.dish;
+    cardContentsList = [
+      RecipeCard(title: 'Ingredients', recipe: dish.ingredients ?? []),
+      RecipeCard(title: 'Recipe', recipe: dish.recipe ?? []),
+      NutritionFactCard(nutritionFacts: (dish.nutritionFact ?? NutritionFact()).toJson()),
+    ];
+  }
   List<String> formatNutritionFacts(Map<String, dynamic> nutritionFacts) {
     List<String> formattedFacts = [];
     nutritionFacts.forEach((key, value) {
@@ -126,6 +79,7 @@ class _DetailsDishState extends State<DetailsDish> {
     });
     return formattedFacts;
   }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -134,7 +88,7 @@ class _DetailsDishState extends State<DetailsDish> {
         gradient: LinearGradient(
           stops: const [0.4, 1],
           colors: [
-            dish["playerColor2"],
+            playerColor2,
             Colors.black.withOpacity(0.00001),
           ],
           begin: Alignment.topCenter,
@@ -148,14 +102,13 @@ class _DetailsDishState extends State<DetailsDish> {
           backgroundColor: Colors.transparent,
           leading: IconButton(
             onPressed: () {
-              widget.closeOpen();
+              Navigator.of(context).pop();
             },
-            icon: const Icon(FluentIcons.chevron_down_20_regular),
+            icon: const Icon(FluentIcons.arrow_left_24_regular),
           ),
           title: Text(
-            dish['title'],
+            widget.dish.title,
             style: const TextStyle(fontSize: 20, color: Colors.white70),
-          
           ),
           actions: [
             IconButton(
@@ -168,13 +121,13 @@ class _DetailsDishState extends State<DetailsDish> {
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Expanded( // Changed from Flexible to Expanded
+            Expanded(
               child: Padding(
                 padding: const EdgeInsets.all(20.0),
                 child: AspectRatio(
                   aspectRatio: 1 / 1,
                   child: Image.network(
-                    dish['imageUrl'],
+                    widget.dish.images![0],
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -186,8 +139,7 @@ class _DetailsDishState extends State<DetailsDish> {
                 children: [
                   IconButton(
                     onPressed: () {},
-                    icon: const Icon(
-                        FluentIcons.device_meeting_room_remote_20_regular),
+                    icon: const Icon(FluentIcons.device_meeting_room_remote_20_regular),
                   ),
                   const Spacer(),
                   IconButton(
@@ -206,7 +158,7 @@ class _DetailsDishState extends State<DetailsDish> {
               ),
             ),
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly, // Adjust the alignment as needed
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 ElevatedButton(
                   onPressed: () {
@@ -235,25 +187,20 @@ class _DetailsDishState extends State<DetailsDish> {
               ],
             ),
 
-            // Display cards based on the current index
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.all(20.0),
                 child: currentCardIndex < cardContentsList.length
-                    ? SingleChildScrollView( // Keep SingleChildScrollView if you have other widgets to scroll with the list
+                    ? SingleChildScrollView(
                         child: Column(
                           children: [
-                            // If cardContentsList[currentCardIndex] returns a widget that uses ListView.builder internally:
                             cardContentsList[currentCardIndex] ?? Container(),
-                            // Other widgets can go here and will scroll with the list
                           ],
                         ),
                       )
                     : Container(),
               ),
             ),
-            
-
           ],
         ),
       ),
