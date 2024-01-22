@@ -88,6 +88,18 @@ class BaseService {
     }
   }
 
+  Future<List<dynamic>> getList(String endpoint) async {
+    try {
+      Response response = await _dio.get(endpoint);
+      return response.data;
+    } catch (e) {
+      throw DioException(
+        requestOptions: RequestOptions(path: endpoint),
+        error: 'Error during GET request: $e',
+      );
+    }
+  }
+
   Future<Map<String, dynamic>> post(String endpoint,
       [Map<String, dynamic>? data]) async {
     try {

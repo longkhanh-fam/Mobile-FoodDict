@@ -27,6 +27,11 @@ const Icon favouriteIcon = Icon(
   size: 35,
   color: secondaryColor,
 );
+Icon unfavouriteIcon = Icon(
+  Icons.favorite,
+  size: 35,
+  color: greyColor,
+);
 Icon moreIcon = Icon(
   Icons.more_horiz_rounded,
   size: 35,

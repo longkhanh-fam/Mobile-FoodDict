@@ -14,18 +14,18 @@ class AlbumFooter extends StatefulWidget {
 class _AlbumFooterState extends State<AlbumFooter> {
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return const Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12),
+          padding: EdgeInsets.symmetric(horizontal: 12),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text('February 25, 2022'),
-              const VerticalSpacer(height: 5),
+              Text('February 25, 2022'),
+              VerticalSpacer(height: 5),
               Row(
-                children: const <Widget>[
+                children: <Widget>[
                   Text('14 songs'),
                   HorizontalSpacer(width: 5),
                   dotIcon,
@@ -36,9 +36,9 @@ class _AlbumFooterState extends State<AlbumFooter> {
             ],
           ),
         ),
-        const VerticalSpacer(height: 20),
+        VerticalSpacer(height: 20),
         Row(
-          children: const <Widget>[
+          children: <Widget>[
             CircleAvatar(
               backgroundImage: AssetImage('assets/images/savara.jpeg'),
               radius: 30,
@@ -51,37 +51,14 @@ class _AlbumFooterState extends State<AlbumFooter> {
           ],
         ),
 
-        const VerticalSpacer(height: 20),
+        VerticalSpacer(height: 20),
         // Recommendations
-        const Text(
+        Text(
           'You might also like',
           style: smallTitle,
         ),
-        const VerticalSpacer(height: 15),
-        SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: Row(
-            children: const <Widget>[
-              HomeBigTile(
-                  title: 'East Mpaka London',
-                  imagePath: 'assets/images/emlBB.jpeg'),
-              HorizontalSpacer(width: 10),
-              HomeBigTile(
-                  title: 'Lil Mama', imagePath: 'assets/images/lilmama.jpg'),
-              HorizontalSpacer(width: 10),
-              HomeBigTile(
-                  title: 'Victims of Madness',
-                  imagePath: 'assets/images/wakadinaliVom.jpeg'),
-              HorizontalSpacer(width: 10),
-              HomeBigTile(title: 'Zoza', imagePath: 'assets/images/zoza.jpg'),
-              HorizontalSpacer(width: 10),
-              HomeBigTile(
-                  title: 'Victims of Madness',
-                  imagePath: 'assets/images/wakadinaliVom.jpeg'),
-            ],
-          ),
-        ),
-        const VerticalSpacer(height: 10)
+        VerticalSpacer(height: 15),
+        VerticalSpacer(height: 10)
       ],
     );
   }

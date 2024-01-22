@@ -66,6 +66,8 @@ Map<String, dynamic> dish =
   };
 
 class DetailsDishScreen extends StatefulWidget {
+  const DetailsDishScreen({super.key});
+
   @override
   _DetailsDishScreenState createState() => _DetailsDishScreenState();
 }

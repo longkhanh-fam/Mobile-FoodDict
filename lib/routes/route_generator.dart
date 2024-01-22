@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 
 //Package imports
 import 'package:fooderapp/config/constants.dart';
-import 'package:fooderapp/pages/album_details_page.dart';
 import 'package:fooderapp/pages/error_page.dart';
 import 'package:fooderapp/pages/home_page.dart';
 import 'package:fooderapp/pages/login_page.dart';
@@ -18,8 +17,6 @@ class RouteGenerator {
         return MaterialPageRoute(builder: ((_) => const LoginPage()));
       case errorPage:
         return MaterialPageRoute(builder: (_) => const ErrorPage());
-      case albumDetailsPage:
-        return MaterialPageRoute(builder: (_) => const AlbumDetailsPage());
       case profilePage:
         return MaterialPageRoute(builder: (_) => const ProfilePage());
       default:

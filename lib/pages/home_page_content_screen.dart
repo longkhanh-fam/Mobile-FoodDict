@@ -1,13 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:fooderapp/config/constants.dart';
+import 'package:fooderapp/models/food_list_model.dart';
+import 'package:fooderapp/services/food_list_service.dart';
 import 'package:fooderapp/theme/font_theme.dart';
 import 'package:fooderapp/utils/helpers.dart';
 import 'package:fooderapp/widgets/home_big_tile.dart';
 import 'package:fooderapp/widgets/home_page_recent_tile.dart';
 
-class HomePageContent extends StatelessWidget {
+class HomePageContent extends StatefulWidget {
   const HomePageContent({super.key});
 
+  @override
+  State<HomePageContent> createState() => _HomePageContentState();
+}
+
+class _HomePageContentState extends State<HomePageContent> {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -130,58 +137,59 @@ class HomePageContent extends StatelessWidget {
             const VerticalSpacer(height: 20),
             const Text('Jump back in', style: mediumTitle),
             const VerticalSpacer(height: 20),
-
-            // Big tiles Row 1
-
-            const SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                children: <Widget>[
-                  HomeBigTile(
-                      imagePath: 'assets/images/kendrickMBS.jpeg',
-                      title: 'Mr. Morale and the Big Steppers'),
-                  HorizontalSpacer(width: 20),
-                  HomeBigTile(
-                      imagePath: 'assets/images/protojeSLT.jpg',
-                      title: 'Search of Lost Time'),
-                  HorizontalSpacer(width: 20),
-                  HomeBigTile(
-                      imagePath: 'assets/images/savagelevel.jpg',
-                      title: 'Savage Level'),
-                  HorizontalSpacer(width: 20),
-                  HomeBigTile(
-                      imagePath: 'assets/images/kendrickDamn.jpeg',
-                      title: 'Damn'),
-                  HorizontalSpacer(width: 20)
-                ],
+            SizedBox(
+              height: 200,
+              child: FutureBuilder(
+                future: getFoodLists(),
+                builder:
+                    (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const CircularProgressIndicator(); // Show loading indicator
+                  } else if (snapshot.hasError) {
+                    // Handle error state
+                    return Text('Error: ${snapshot.error}');
+                  } else {
+                    List<FoodList> foodList = snapshot.data;
+                    return ListView.separated(
+                      scrollDirection: Axis.horizontal,
+                      shrinkWrap: true,
+                      itemCount: foodList.length,
+                      separatorBuilder: (BuildContext context, int index) =>
+                          const HorizontalSpacer(width: 20),
+                      itemBuilder: (context, index) =>
+                          HomeBigTile(foodList[index]),
+                    );
+                  }
+                },
               ),
             ),
-
             const VerticalSpacer(height: 20),
             const Text('Made for you', style: mediumTitle),
             const VerticalSpacer(height: 20),
-
-            const SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                children: <Widget>[
-                  HomeBigTile(
-                      imagePath: 'assets/images/khalidFs.png',
-                      title: 'Free Spirit'),
-                  HorizontalSpacer(width: 20),
-                  HomeBigTile(
-                      imagePath: 'assets/images/kendrickDamn.jpeg',
-                      title: 'Damn'),
-                  HorizontalSpacer(width: 20),
-                  HomeBigTile(
-                      imagePath: 'assets/images/jcoleFHD.jpg',
-                      title: 'Forest Hill Drive'),
-                  HorizontalSpacer(width: 20),
-                  HomeBigTile(
-                      imagePath: 'assets/images/wakadinaliVom.jpeg',
-                      title: 'Wakadinali\'s Victims of Madness'),
-                  HorizontalSpacer(width: 20),
-                ],
+            SizedBox(
+              height: 200,
+              child: FutureBuilder(
+                future: getFoodLists(),
+                builder:
+                    (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const CircularProgressIndicator(); // Show loading indicator
+                  } else if (snapshot.hasError) {
+                    // Handle error state
+                    return Text('Error: ${snapshot.error}');
+                  } else {
+                    List<FoodList> foodList = snapshot.data;
+                    return ListView.separated(
+                      scrollDirection: Axis.horizontal,
+                      shrinkWrap: true,
+                      itemCount: foodList.length,
+                      separatorBuilder: (BuildContext context, int index) =>
+                          const HorizontalSpacer(width: 20),
+                      itemBuilder: (context, index) =>
+                          HomeBigTile(foodList[index]),
+                    );
+                  }
+                },
               ),
             )
           ],
