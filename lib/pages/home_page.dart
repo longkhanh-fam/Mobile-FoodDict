@@ -7,7 +7,7 @@ import 'package:fooderapp/theme/font_theme.dart';
 import 'package:fooderapp/utils/helpers.dart';
 import 'package:fooderapp/widgets/home_big_tile.dart';
 import 'package:fooderapp/widgets/home_page_recent_tile.dart';
-import 'package:fooderapp/pages/image_picker_screen.dart';
+import 'package:fooderapp/pages/camera_screen.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -22,7 +22,7 @@ class _HomePageState extends State<HomePage> {
   final List<Widget> _screens = [
     HomePageContent(),
     const NewsFeedScreen(),
-    const ImagePickerScreen(),
+    const CameraScreen(),
     SearchScreen(),
     const ErrorPage(),
   ];

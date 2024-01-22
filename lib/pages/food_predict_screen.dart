@@ -1,9 +1,12 @@
+import 'dart:ffi';
 import 'dart:typed_data';
 import 'dart:io';
 import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:image/image.dart' as imglib;
-import 'package:tflite_flutter/tflite_flutter.dart';
+import 'package:fooderapp/pages/details_dish_page.dart';
+import 'package:image/image.dart' as img;
+import 'package:tflite_flutter/src/bindings/tensorflow_lite_bindings_generated.dart';
+import 'package:tflite_flutter/tflite_flutter.dart' as tfl;
 
 class PredictionScreen extends StatefulWidget {
   final String imagePath;
@@ -15,7 +18,7 @@ class PredictionScreen extends StatefulWidget {
 }
 
 class _PredictionScreenState extends State<PredictionScreen> {
-  late Interpreter interpreter;
+  late tfl.Interpreter interpreter;
   List<String> foodList = [
     'apple_pie',
     'baby_back_ribs',
@@ -119,7 +122,7 @@ class _PredictionScreenState extends State<PredictionScreen> {
     'tuna_tartare',
     'waffles'
   ];
-  late Uint8List imageBytes;
+  late Float32List imageBytes;
   late String predictedClass;
 
   @override
@@ -131,116 +134,104 @@ class _PredictionScreenState extends State<PredictionScreen> {
     loadModel();
   }
 
-  Future<Uint8List> preprocessImage(
-      File imageFile, int targetWidth, int targetHeight) async {
-    final rawBytes = await imageFile.readAsBytes();
-    final Uint8List imageBytes = Uint8List.fromList(rawBytes);
+  // Hàm đọc và xử lý hình ảnh từ đường dẫn imagePath
+  Float32List processImage(
+      String imagePath, int targetWidth, int targetHeight) {
+    // Đọc hình ảnh từ đường dẫn
+    File imageFile = File(imagePath);
+    img.Image image = img.decodeImage(imageFile.readAsBytesSync())!;
 
-    // Decode image using image package
-    imglib.Image image = imglib.decodeImage(imageBytes) as imglib.Image;
+    // Resize hình ảnh nếu cần
+    if (image.width != targetWidth || image.height != targetHeight) {
+      image = img.copyResize(image, width: targetWidth, height: targetHeight);
+    }
 
-    // Resize image to the target dimensions
-    image = imglib.copyResize(image, width: targetWidth, height: targetHeight);
+    // Chuẩn bị dữ liệu đầu vào cho mô hình
+    var inputData = Float32List(3 * targetWidth * targetHeight);
+    for (var y = 0; y < targetHeight; y++) {
+      for (var x = 0; x < targetWidth; x++) {
+        var pixel = image.getPixel(x, y);
+        inputData[y * targetWidth * 3 + x * 3] = (img.getRed(pixel) / 255.0);
+        inputData[y * targetWidth * 3 + x * 3 + 1] =
+            (img.getGreen(pixel) / 255.0);
+        inputData[y * targetWidth * 3 + x * 3 + 2] =
+            (img.getBlue(pixel) / 255.0);
+      }
+    }
 
-    return Uint8List.fromList(imglib.encodeJpg(image));
+    return inputData;
   }
 
   void loadImage() async {
-    imageBytes = await preprocessImage(File(widget.imagePath), 299, 299);
-    // imageBytes = Uint8List.fromList(await File(widget.imagePath).readAsBytes());
-    // File imageFile = File(widget.imagePath);
-    // List<int> imageBytes = imageFile.readAsBytesSync();
-
-    // // Decode ảnh
-    // img.Image image = img.decodeImage(Uint8List.fromList(imageBytes))!;
-
-    // // Resize ảnh
-    // img.Image resizedImage = img.copyResize(image, width: 299, height: 299);
-
-    // // Convert ảnh sang mảng bytes và chuẩn hóa
-    // imageBytes = Uint8List.fromList(img.encodePng(resizedImage));
-
-    // return normalizedImage;
+    imageBytes = processImage(widget.imagePath, 299, 299);
   }
 
   void loadModel() async {
-    interpreter = await Interpreter.fromAsset('assets/food_model.tflite');
+    interpreter = await tfl.Interpreter.fromAsset('assets/food_model.tflite');
   }
 
-  String predictImage() {
-    print(imageBytes);
-    var inputShape = interpreter.getInputTensor(0).shape;
-
-// Kiểm tra kích thước đầu vào yêu cầu bởi mô hình
-    print('Model Input Shape: $inputShape');
-    // var input = imageBytes.buffer.asUint8List();
-    // var output = List.generate(1, (index) => List.filled(foodList.length, 0.0));
-
-    //   // Example: Chuẩn bị dữ liệu đầu vào
-    // var inputShape = interpreter!.getInputTensor(0).shape;
-    var inputType = interpreter.getInputTensor(0).type;
-    print('Model Input Type: $inputType');
-    var inputData =
-        Float32List.fromList(imageBytes.map((e) => e / 255.0).toList());
-    // TensorBuffer inputTensorBuffer = TensorBufferFloat32.fromList(inputShape, inputData);
-    var outputTensorBuffer = Float32List(101);
-    print(inputData);
-    print(outputTensorBuffer);
+  void predictImage() {
+    var input = imageBytes.reshape([1, 299, 299, 3]);
+    var output = List.filled(1 * 101, 0).reshape([1, 101]);
 
     // Thực hiện dự đoán bằng cách truyền dữ liệu vào mô hình
-    interpreter.run(inputData, interpreter.getOutputTensor(0).data);
-    Float32List outputData = interpreter.getOutputTensor(0).data as Float32List;
-    int predictedClassIndex = outputData
-        .indexOf(outputData.reduce((curr, next) => curr > next ? curr : next));
+    interpreter.run(input, output);
 
-    print(predictedClassIndex);
+    var maxResult = output[0]
+        .reduce((double max, double current) => max > current ? max : current);
 
-    // interpreter.run(input, output);
-
-    // final index = output[0].indexOf(output[0].reduce((a, b) => a > b ? a : b));
-
-    // Get the predicted food item
-    // final predValue = foodList[index];
-
-    // print('Predicted food item: $predValue');
-    return "";
+    var maxIndex = output[0].indexOf(maxResult);
+    predictedClass = foodList[maxIndex];
   }
 
-  void onPredictPressed() {
+  void findDish() {
     predictImage();
-    // Hiển thị tên của lớp được dự đoán
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Kết quả dự đoán'),
-        content: Text('Ảnh được dự đoán thuộc lớp: $predictedClass'),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            child: const Text('Đóng'),
-          ),
-        ],
-      ),
+    print('Predicted Class $predictedClass');
+    Navigator.of(context).push(
+      MaterialPageRoute(builder: (context) => const DetailsDishPage()),
     );
+
+    // Hiển thị tên của lớp được dự đoán
+    // showDialog(
+    //   context: context,
+    //   builder: (context) => AlertDialog(
+    //     title: const Text('Kết quả dự đoán'),
+    //     content: Text('Ảnh được dự đoán thuộc lớp: $predictedClass'),
+    //     actions: [
+    //       TextButton(
+    //         onPressed: () {
+    //           Navigator.pop(context);
+    //         },
+    //         child: const Text('Đóng'),
+    //       ),
+    //     ],
+    //   ),
+    // );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Dự đoán Thực Phẩm'),
-      ),
+      appBar: AppBar(),
       body: Column(
         children: [
           // Hiển thị ảnh
-          Image.file(File(widget.imagePath), height: 200, width: 200),
+
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SizedBox(
+                height: 500,
+                width: 300,
+                child: Image.file(File(widget.imagePath)),
+              ),
+            ],
+          ),
 
           // Nút Dự đoán
           ElevatedButton(
-            onPressed: onPredictPressed,
-            child: const Text('Dự đoán'),
+            onPressed: findDish,
+            child: const Text('Find dish'),
           ),
         ],
       ),
