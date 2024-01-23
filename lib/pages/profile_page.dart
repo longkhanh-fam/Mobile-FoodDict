@@ -60,11 +60,11 @@ class _ProfilePageState extends State<ProfilePage> {
                           children: [
                             Text(user.name,
                                 style: const TextStyle(fontSize: 20)),
-                            const Row(
+                            Row(
                               children: [
-                                Text("0 followers"),
-                                SizedBox(width: 10),
-                                Text("7 following"),
+                                Text("${user.followers} followers"),
+                                const SizedBox(width: 10),
+                                Text("${user.following} following"),
                               ],
                             ),
                             const SizedBox(height: 20),
@@ -90,7 +90,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                 });
                               }
                             },
-                            child: const Text('Edit'),
+                            child: const Text('Edit profile'),
                           ),
                         ),
                       ],

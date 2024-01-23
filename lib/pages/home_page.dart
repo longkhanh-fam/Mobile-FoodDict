@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fooderapp/pages/detail_dish_screen.dart';
 import 'package:fooderapp/pages/home_page_content_screen.dart';
+import 'package:fooderapp/pages/library_page.dart';
 import 'package:fooderapp/pages/newsfeed_screen.dart';
 import 'package:fooderapp/pages/search_screen.dart';
 
@@ -18,7 +19,7 @@ class _HomePageState extends State<HomePage> {
     HomePageContent(),
     NewsFeedScreen(), 
     SearchScreen(),
-    //DetailsDishScreen(),
+    LibraryPage(),
   ];
 
 
