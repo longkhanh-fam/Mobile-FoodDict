@@ -3,10 +3,12 @@ import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:fooderapp/models/food_model.dart';
 import 'package:fooderapp/theme/font_theme.dart';
 import 'package:fooderapp/utils/helpers.dart';
+import 'package:fooderapp/widgets/comment_widget.dart';
 import 'package:fooderapp/widgets/nutrition_fact_card.dart';
 import 'package:fooderapp/widgets/recipe_card.dart';
 
 import '../config/colors/colors.dart';
+
 
 class DetailsDishScreen extends StatefulWidget {
   final Food dish;
@@ -145,10 +147,6 @@ class _DetailsDishState extends State<DetailsDish> {
                   ),
                   const Spacer(),
                   IconButton(
-                    onPressed: () {},
-                    icon: const Icon(FluentIcons.share_ios_20_regular),
-                  ),
-                  IconButton(
                     onPressed: () {
                       setState(() {
                         isLiked = !isLiked;
@@ -158,6 +156,19 @@ class _DetailsDishState extends State<DetailsDish> {
                         ? const Icon(FluentIcons.heart_20_filled)
                         : const Icon(FluentIcons.heart_20_regular),
                   ),
+                  IconButton(
+                    onPressed: () {
+                      // Show the CommentWidget when the button is pressed
+                      showModalBottomSheet(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return CommentWidget();
+                        },
+                      );
+                    },
+                    icon: const Icon(FluentIcons.comment_20_regular),
+                  ),
+                  
                 ],
               ),
             ),

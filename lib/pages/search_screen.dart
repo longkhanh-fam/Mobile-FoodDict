@@ -20,7 +20,7 @@ class _SearchScreenState extends State<SearchScreen> {
   void initState() {
     super.initState();
     // Fetching the list of foods when the widget is initialized
-    _foodList = getFoods();
+      _foodList = getFoods();
   }
   @override
   Widget build(BuildContext context) {
@@ -174,7 +174,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                 child: Wrap(
                                   crossAxisAlignment: WrapCrossAlignment.center,
                                   children: [
-                                    searchedFood.isLiked ?? false
+                                    searchedFood.isFavourite ?? false
                                         ? Icon(
                                             FluentIcons.heart_20_filled,
                                             color: Colors.greenAccent[400],

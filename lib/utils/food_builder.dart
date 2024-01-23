@@ -18,7 +18,7 @@ Widget foodBuilder(Future<List<Food>> fetch) {
           shrinkWrap: true,
           itemBuilder: (context, index) {
             final food = foods[index];
-            return FoodTile(food.id, food.title, food.images!, food.body);
+            return FoodTile(food.id!, food.title, food.images!, food.body);
           },
           itemCount: foods.length,
           separatorBuilder: (_, __) => const VerticalSpacer(height: 10),

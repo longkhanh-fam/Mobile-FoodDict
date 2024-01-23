@@ -16,6 +16,7 @@ class User {
   int followers;
   int following;
 
+
   User({
     required this.id,
     required this.name,
