@@ -8,7 +8,6 @@ import 'package:fooderapp/widgets/recipe_card.dart';
 
 import '../config/colors/colors.dart';
 
-
 class DetailsDishScreen extends StatefulWidget {
   final Food dish;
 
@@ -69,9 +68,11 @@ class _DetailsDishState extends State<DetailsDish> {
     cardContentsList = [
       RecipeCard(title: 'Ingredients', recipe: dish.ingredients ?? []),
       RecipeCard(title: 'Recipe', recipe: dish.recipe ?? []),
-      NutritionFactCard(nutritionFacts: (dish.nutritionFact ?? NutritionFact()).toJson()),
+      NutritionFactCard(
+          nutritionFacts: (dish.nutritionFact ?? NutritionFact()).toJson()),
     ];
   }
+
   List<String> formatNutritionFacts(Map<String, dynamic> nutritionFacts) {
     List<String> formattedFacts = [];
     nutritionFacts.forEach((key, value) {
@@ -139,7 +140,8 @@ class _DetailsDishState extends State<DetailsDish> {
                 children: [
                   IconButton(
                     onPressed: () {},
-                    icon: const Icon(FluentIcons.device_meeting_room_remote_20_regular),
+                    icon: const Icon(
+                        FluentIcons.device_meeting_room_remote_20_regular),
                   ),
                   const Spacer(),
                   IconButton(
@@ -152,7 +154,9 @@ class _DetailsDishState extends State<DetailsDish> {
                         isLiked = !isLiked;
                       });
                     },
-                    icon: isLiked ? Icon(FluentIcons.heart_20_filled) : Icon(FluentIcons.heart_20_regular),
+                    icon: isLiked
+                        ? const Icon(FluentIcons.heart_20_filled)
+                        : const Icon(FluentIcons.heart_20_regular),
                   ),
                 ],
               ),
@@ -166,7 +170,7 @@ class _DetailsDishState extends State<DetailsDish> {
                       currentCardIndex = 0;
                     });
                   },
-                  child: Text('Ingredients'),
+                  child: const Text('Ingredients'),
                 ),
                 ElevatedButton(
                   onPressed: () {
@@ -174,7 +178,7 @@ class _DetailsDishState extends State<DetailsDish> {
                       currentCardIndex = 1;
                     });
                   },
-                  child: Text('Recipe'),
+                  child: const Text('Recipe'),
                 ),
                 ElevatedButton(
                   onPressed: () {
@@ -182,11 +186,10 @@ class _DetailsDishState extends State<DetailsDish> {
                       currentCardIndex = 2;
                     });
                   },
-                  child: Text('Nutrition Facts'),
+                  child: const Text('Nutrition Facts'),
                 ),
               ],
             ),
-
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.all(20.0),

@@ -4,6 +4,7 @@ import 'package:fooderapp/pages/home_page_content_screen.dart';
 import 'package:fooderapp/pages/library_page.dart';
 import 'package:fooderapp/pages/newsfeed_screen.dart';
 import 'package:fooderapp/pages/search_screen.dart';
+import 'package:fooderapp/pages/add_food_screen.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -16,20 +17,20 @@ class _HomePageState extends State<HomePage> {
   int _currentNavItem = 0;
 
   final List<Widget> _screens = [
-    HomePageContent(),
-    NewsFeedScreen(), 
+    const HomePageContent(),
+    NewsFeedScreen(),
     SearchScreen(),
+
     LibraryPage(),
   ];
 
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(  
+    return Scaffold(
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         currentIndex: _currentNavItem,
-        items: const [                        
+        items: const [
           BottomNavigationBarItem(
               activeIcon: Icon(Icons.home),
               icon: Icon(Icons.home_outlined),
@@ -46,8 +47,6 @@ class _HomePageState extends State<HomePage> {
               icon: Icon(Icons.library_music_outlined),
               label: 'Library',
               activeIcon: Icon(Icons.library_music_rounded)),
-          
-              
         ],
         fixedColor: Colors.white,
         iconSize: 20,
