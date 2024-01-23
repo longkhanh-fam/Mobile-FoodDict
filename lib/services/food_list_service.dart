@@ -8,6 +8,11 @@ Future<List<FoodList>> getFoodLists() async {
       .map((e) => FoodList.fromJson(e))
       .toList();
 }
+Future<List<FoodList>> getFavouriteFoodLists() async {
+  return (await BaseService().getList("$foodListController/favourites"))
+      .map((e) => FoodList.fromJson(e))
+      .toList();
+}
 
 Future<FoodList> getFoodList(int id) async {
   return FoodList.fromJson(await BaseService().get("$foodListController/$id"));
