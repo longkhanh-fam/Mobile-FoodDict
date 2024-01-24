@@ -8,10 +8,10 @@ const authConstroller = "auth";
 // }
 
 Future<void> auth(String? idToken, String fcmToken) async {
-  final data = await BaseService()
+  final data = await BaseService.instance
       .post(authConstroller, {"idToken": idToken, "fcmToken": fcmToken});
   final accessToken = data['accessToken'];
-  BaseService().setJwtToken(accessToken);
+  BaseService.instance.setJwtToken(accessToken);
   final a = await SharedPreferences.getInstance();
   a.setInt("userId", data["id"]);
 }
