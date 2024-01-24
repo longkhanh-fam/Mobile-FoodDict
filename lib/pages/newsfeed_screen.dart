@@ -1,84 +1,69 @@
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
+import 'package:fooderapp/models/food_model.dart';
+import 'package:fooderapp/pages/add_food_screen.dart';
+import 'package:fooderapp/services/food_service.dart';
+import 'package:fooderapp/widgets/newsfeed_item.dart';
 
 class NewsFeedScreen extends StatefulWidget {
+  const NewsFeedScreen({super.key});
+
   @override
   _NewsFeedScreenState createState() => _NewsFeedScreenState();
 }
-
 class _NewsFeedScreenState extends State<NewsFeedScreen> {
+  //late Future<List<Food>> _foodList;
+late Future<List<Food>> _foodList;
+  @override
+  void initState() {
+    super.initState();
+    // Fetching the list of foods when the widget is initialized
+    _foodList = getSomeFoods(10);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.black,
-        title: Text('Foodfeeds'),
+        title: const Text(
+          'Foodfeeds',
+          style: TextStyle(
+            fontSize: 25.0,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
       ),
-      body: ListView.builder(
-        itemCount: 10, // This should be the length of your data list
-        itemBuilder: (context, index) {
-          return NewsFeedItem(
-            onImagePressed: () {
-              // Handle image pressed action
-              print('Image pressed for item $index');
-            },
-          ); // Custom widget for newsfeed item
+      body: FutureBuilder<List<Food>>(
+        future: _foodList,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return CircularProgressIndicator(); // Display a loading indicator while fetching data
+          } else if (snapshot.hasError) {
+            return Text('Error: ${snapshot.error}');
+          } else {
+            // Display the ListView.builder once the data is available
+            return ListView.builder(
+              itemCount: snapshot.data!.length,
+              itemBuilder: (context, index) {
+                return NewsFeedItem(food: snapshot.data![index]);
+              },
+            );
+          }
         },
       ),
-    );
-  }
-}
-
-class NewsFeedItem extends StatelessWidget {
-  final VoidCallback onImagePressed;
-
-  NewsFeedItem({required this.onImagePressed});
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      color: Colors.black,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          ListTile(
-            leading: CircleAvatar(
-              // Profile picture
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const AddFoodScreen(),
             ),
-            title: Text('User Name'), // User name
-            subtitle: Text('Time ago'), // Post time
-          ),
-          Padding(
-            padding: EdgeInsets.all(8.0),
-            child: Text('Post content goes here...'), // Post content
-          ),
-          GestureDetector(
-            onTap: onImagePressed,
-            child: Center(
-              child: Image.asset(
-                'assets/images/jcoleFHD.jpg', // Post image
-                fit: BoxFit.cover,
-              ),
-            ),
-          ),
-          ButtonBar(
-            children: <Widget>[
-              TextButton(
-                child: Icon(FluentIcons.heart_20_filled),
-                onPressed: () {/* Like action */},
-              ),
-              TextButton(
-                child: Icon(FluentIcons.comment_20_filled),
-                onPressed: () {/* Comment action */},
-              ),
-              TextButton(
-                child: Icon(Icons.share),
-                onPressed: () {/* Share action */},
-              ),
-            ],
-          )
-        ],
+          );
+        },
+        backgroundColor: Colors.blue,
+        child: const Icon(Icons.add),
       ),
     );
   }
 }
+
