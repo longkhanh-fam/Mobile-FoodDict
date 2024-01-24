@@ -17,10 +17,10 @@ class _HomePageState extends State<HomePage> {
 
   final List<Widget> _screens = [
     const HomePageContent(),
-    const NewsFeedScreen(),
+    NewsFeedScreen(),
     SearchScreen(),
-    // DetailsDishScreen(),
-    // const AddFoodScreen(),
+    //DetailsDishScreen(),
+    const AddFoodScreen(),
   ];
 
   @override
