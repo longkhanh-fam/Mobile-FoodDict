@@ -1,4 +1,5 @@
 import 'package:fooderapp/services/base_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 const authConstroller = "auth";
 
@@ -6,8 +7,11 @@ const authConstroller = "auth";
 //   return await BaseService().post("$authConstroller/test");
 // }
 
-Future<void> auth(String? idToken) async {
-  final data = await BaseService().post(authConstroller, {"idToken": idToken});
+Future<void> auth(String? idToken, String fcmToken) async {
+  final data = await BaseService()
+      .post(authConstroller, {"idToken": idToken, "fcmToken": fcmToken});
   final accessToken = data['accessToken'];
   BaseService().setJwtToken(accessToken);
+  final a = await SharedPreferences.getInstance();
+  a.setInt("userId", data["id"]);
 }

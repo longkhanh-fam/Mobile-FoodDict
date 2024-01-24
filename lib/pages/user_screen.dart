@@ -100,7 +100,7 @@ class _UserScreenState extends State<UserScreen> {
                             ],
                           ),
                           const SizedBox(height: 12),
-                          Text(user.bio),
+                          Text(user.bio ?? ""),
                         ],
                       ),
                       const SizedBox(

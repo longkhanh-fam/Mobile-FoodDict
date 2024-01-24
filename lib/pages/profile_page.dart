@@ -30,7 +30,18 @@ class _ProfilePageState extends State<ProfilePage> {
                 return const CircularProgressIndicator(); // Show loading indicator
               } else if (snapshot.hasError) {
                 // Handle error state
-                return Text('Error: ${snapshot.error}');
+                return Column(
+                  children: [
+                    ElevatedButton(
+                        onPressed: () {
+                          FirebaseUIAuth.signOut();
+                          Navigator.of(context).pushNamedAndRemoveUntil(
+                              loginPage, (Route<dynamic> route) => false);
+                        },
+                        child: const Text("Sign out")),
+                    Text('Error: ${snapshot.error}')
+                  ],
+                );
               } else {
                 User user = snapshot.data;
                 // return ProfileScreen(
@@ -69,7 +80,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                 ],
                               ),
                               const SizedBox(height: 20),
-                              Text(user.bio,
+                              Text(user.bio ?? "",
                                   overflow: TextOverflow.ellipsis,
                                   maxLines: 3,
                                   style: const TextStyle(fontSize: 12)),
