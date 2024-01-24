@@ -15,3 +15,7 @@ Future<void> updateProfile(Map<String, dynamic> data) async {
   await BaseService().patch(profileController, data);
 }
 
+Future<void> follow(int targetId, bool follow) async {
+  await BaseService().post(
+      "$profileController/follow", {"targetId": targetId, "follow": follow});
+}

@@ -15,7 +15,7 @@ class User {
   List<FoodList> foodLists;
   int followers;
   int following;
-
+  bool? isFollowed;
 
   User({
     required this.id,
@@ -26,6 +26,7 @@ class User {
     required this.foodLists,
     required this.followers,
     required this.following,
+    this.isFollowed,
   });
 
   factory User.fromJson(Map<String, dynamic> json) => User(
@@ -39,6 +40,7 @@ class User {
             json["foodLists"].map((x) => FoodList.fromJson(x))),
         followers: json["followers"],
         following: json["following"],
+        isFollowed: json["isFollowed"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -50,5 +52,6 @@ class User {
         "foodLists": List<dynamic>.from(foodLists.map((x) => x.toJson())),
         "followers": followers,
         "following": following,
+        "isFollowed": isFollowed,
       };
 }

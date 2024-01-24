@@ -1,6 +1,5 @@
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
-import 'package:fooderapp/models/food_list_model.dart';
 import 'package:fooderapp/models/food_model.dart';
 import 'package:fooderapp/pages/detail_dish_screen.dart';
 import 'package:fooderapp/services/food_service.dart';
@@ -8,12 +7,14 @@ import 'package:fooderapp/utils/helpers.dart';
 import 'package:fooderapp/widgets/genre_grid_view.dart';
 
 class SearchScreen extends StatefulWidget {
+  const SearchScreen({super.key});
+
   @override
   _SearchScreenState createState() => _SearchScreenState();
 }
 
 class _SearchScreenState extends State<SearchScreen> {
-  TextEditingController _searchController = TextEditingController();
+  final TextEditingController _searchController = TextEditingController();
   bool isSearching = false;
   late Future<List<Food>> _foodList;
   @override
@@ -30,8 +31,8 @@ class _SearchScreenState extends State<SearchScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.fromLTRB(10, 30, 15, 0),
+            const Padding(
+              padding: EdgeInsets.fromLTRB(10, 30, 15, 0),
               child: Text(
                 'Search',
                 style: TextStyle(
@@ -41,16 +42,16 @@ class _SearchScreenState extends State<SearchScreen> {
               ),
             ),
             Padding(
-              padding: EdgeInsets.all(10.0),
+              padding: const EdgeInsets.all(10.0),
               child: TextField(
                 controller: _searchController,
-                style: TextStyle(color: Colors.black),
+                style: const TextStyle(color: Colors.black),
                 onChanged: (value) {
                   setState(() {
                     isSearching = value.isNotEmpty;
                   });
                 },
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   fillColor: Colors.white,
                   prefixIcon: Icon(Icons.search, color: Colors.black, size: 28.0),
                   filled: true,
@@ -61,10 +62,10 @@ class _SearchScreenState extends State<SearchScreen> {
               ),
             ),
             Padding(
-              padding: EdgeInsets.fromLTRB(10, 30, 15, 0),
+              padding: const EdgeInsets.fromLTRB(10, 30, 15, 0),
               child: Text(
                 isSearching ? 'Search Results' : 'Genres',
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 20.0,
                   fontWeight: FontWeight.w500,
                 ),
@@ -116,7 +117,7 @@ class _SearchScreenState extends State<SearchScreen> {
                     future: _foodList,
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
-                        return CircularProgressIndicator();
+                        return const CircularProgressIndicator();
                       } else if (snapshot.hasError) {
                         return Text('Error: ${snapshot.error}');
                       } else if (!isSearching || snapshot.data!.isEmpty ?? true) {
@@ -128,7 +129,7 @@ class _SearchScreenState extends State<SearchScreen> {
                             .toList();
 
                         if (searchResults.isEmpty) {
-                          return Text('No search results');
+                          return const Text('No search results');
                         }
 
                         // Display the scrollable search results using ListView.builder
@@ -140,12 +141,12 @@ class _SearchScreenState extends State<SearchScreen> {
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                        builder: (context) => DetailsDishScreen(dish: searchedFood),
+                                        builder: (context) => DetailsDishScreen(searchedFood.id!),
                                       ),
                                     );
                                   },
                                 child: ListTile(
-                              contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 0),
+                              contentPadding: const EdgeInsets.symmetric(vertical: 10, horizontal: 0),
                               horizontalTitleGap: 0,
                               leading: Padding(
                                 padding: const EdgeInsets.only(left: 10.0, right: 15),

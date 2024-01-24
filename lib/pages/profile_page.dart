@@ -55,22 +55,26 @@ class _ProfilePageState extends State<ProfilePage> {
                           ),
                         ),
                         const SizedBox(width: 20.0),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(user.name,
-                                style: const TextStyle(fontSize: 20)),
-                            Row(
-                              children: [
-                                Text("${user.followers} followers"),
-                                const SizedBox(width: 10),
-                                Text("${user.following} following"),
-                              ],
-                            ),
-                            const SizedBox(height: 20),
-                            Text(user.bio ?? "",
-                                style: const TextStyle(fontSize: 12)),
-                          ],
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(user.name,
+                                  style: const TextStyle(fontSize: 20)),
+                              Row(
+                                children: [
+                                  Text("${user.followers} followers"),
+                                  const SizedBox(width: 10),
+                                  Text("${user.following} following"),
+                                ],
+                              ),
+                              const SizedBox(height: 20),
+                              Text(user.bio,
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 3,
+                                  style: const TextStyle(fontSize: 12)),
+                            ],
+                          ),
                         ),
                       ],
                     ),

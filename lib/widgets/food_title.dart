@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fooderapp/config/constants.dart';
+import 'package:fooderapp/pages/detail_dish_screen.dart';
 
 class FoodTile extends StatelessWidget {
   final int id;
@@ -11,8 +12,8 @@ class FoodTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      // onTap: () => Navigator.of(context)
-      //     .push(MaterialPageRoute(builder: (_) => DetailsDishScreen(id))),
+      onTap: () => Navigator.of(context)
+          .push(MaterialPageRoute(builder: (_) => DetailsDishScreen(id))),
       child: Padding(
         padding: const EdgeInsets.all(12.0),
         child: Row(children: [
