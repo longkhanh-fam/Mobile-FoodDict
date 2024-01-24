@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:fooderapp/config/constants.dart';
 import 'package:fooderapp/pages/error_page.dart';
 import 'package:fooderapp/pages/home_page.dart';
+import 'package:fooderapp/pages/library_page.dart';
 import 'package:fooderapp/pages/login_page.dart';
 import 'package:fooderapp/pages/profile_page.dart';
 
@@ -19,6 +20,8 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => const ErrorPage());
       case profilePage:
         return MaterialPageRoute(builder: (_) => const ProfilePage());
+      case libraryPage:
+        return MaterialPageRoute(builder: (_) => const LibraryPage());
       default:
         return MaterialPageRoute(builder: (_) => const ErrorPage());
     }

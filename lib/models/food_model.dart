@@ -9,7 +9,7 @@ Food foodFromJson(String str) => Food.fromJson(json.decode(str));
 String foodToJson(Food data) => json.encode(data.toJson());
 
 class Food {
-  int id;
+  int? id;
   String title;
   String body;
   List<String>? images;
@@ -18,10 +18,14 @@ class Food {
   NutritionFact? nutritionFact;
   int? authorId;
   DateTime? createdAt;
-  bool? isLiked;
+  bool? isPublic;
+  List<Comment>? comments;
+  List<dynamic>? categories;
+  int? likersCount;
+  bool? isFavourite;
 
   Food({
-    required this.id,
+    this.id,
     required this.title,
     required this.body,
     this.images,
@@ -30,8 +34,11 @@ class Food {
     this.nutritionFact,
     this.authorId,
     this.createdAt,
-    this.isLiked
-    
+    this.isPublic,
+    this.comments,
+    this.categories,
+    this.likersCount,
+    this.isFavourite,
   });
 
   factory Food.fromJson(Map<String, dynamic> json) => Food(
@@ -44,6 +51,16 @@ class Food {
         nutritionFact: NutritionFact.fromJson(json["nutrition_fact"]),
         authorId: json["authorId"],
         createdAt: DateTime.parse(json["createdAt"]),
+        isPublic: json["isPublic"],
+        comments: json["comments"] == null
+            ? null
+            : List<Comment>.from(
+                json["comments"].map((x) => Comment.fromJson(x))),
+        categories: json["categories"] == null
+            ? null
+            : List<dynamic>.from(json["categories"].map((x) => x)),
+        likersCount: json["likers_count"],
+        isFavourite: json["isFavourite"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -56,6 +73,11 @@ class Food {
         "nutrition_fact": nutritionFact?.toJson(),
         "authorId": authorId,
         "createdAt": createdAt?.toIso8601String(),
+        "isPublic": isPublic,
+        "comments": List<dynamic>.from(comments!.map((x) => x.toJson())),
+        "categories": List<dynamic>.from(categories!.map((x) => x)),
+        "likers_count": likersCount,
+        "isFavourite": isFavourite,
       };
 }
 
@@ -70,7 +92,6 @@ class NutritionFact {
   String? dietaryFiber;
   String? saturatedFat;
   String? totalCarbohydrate;
-  
 
   NutritionFact({
     this.sugar,
@@ -86,7 +107,7 @@ class NutritionFact {
   });
 
   static String _parseCalories(dynamic calories) {
-    if (calories is int) {
+    if (calories is int || calories is double) {
       // If calories is an integer, convert it to a string
       return calories.toString();
     } else if (calories is String) {
@@ -99,16 +120,16 @@ class NutritionFact {
   }
 
   factory NutritionFact.fromJson(Map<String, dynamic> json) => NutritionFact(
-        sugar: json["sugar"],
-        sodium: json["sodium"],
-        protein: json["protein"],
+        sugar: _parseCalories(json["sugar"]),
+        sodium: _parseCalories(json["sodium"]),
+        protein: _parseCalories(json["protein"]),
         calories: _parseCalories(json["calories"]),
-        totalFat: json["total_fat"],
-        cholesterol: json["cholesterol"],
-        servingSize: json["serving_size"],
-        dietaryFiber: json["dietary_fiber"],
-        saturatedFat: json["saturated_fat"],
-        totalCarbohydrate: json["total_carbohydrate"],
+        totalFat: _parseCalories(json["total_fat"]),
+        cholesterol: _parseCalories(json["cholesterol"]),
+        servingSize: _parseCalories(json["serving_size"]),
+        dietaryFiber: _parseCalories(json["dietary_fiber"]),
+        saturatedFat: _parseCalories(json["saturated_fat"]),
+        totalCarbohydrate: _parseCalories(json["total_carbohydrate"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -122,5 +143,61 @@ class NutritionFact {
         "dietary_fiber": dietaryFiber,
         "saturated_fat": saturatedFat,
         "total_carbohydrate": totalCarbohydrate,
+      };
+}
+
+class Comment {
+  int? id;
+  String body;
+  int? authorId;
+  DateTime? createdAt;
+  int? foodId;
+  CommentAuthor? author;
+
+  Comment({
+    this.id,
+    required this.body,
+    this.authorId,
+    this.createdAt,
+    this.foodId,
+    required this.author,
+  });
+
+  factory Comment.fromJson(Map<String, dynamic> json) => Comment(
+        id: json["id"],
+        body: json["body"],
+        authorId: json["authorId"],
+        createdAt: DateTime.parse(json["createdAt"]),
+        foodId: json["foodId"],
+        author: CommentAuthor.fromJson(json["author"]),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "body": body,
+        "authorId": authorId,
+        "createdAt": createdAt?.toIso8601String(),
+        "foodId": foodId,
+        "author": author?.toJson(),
+      };
+}
+
+class CommentAuthor {
+  String imageUrl;
+  String name;
+
+  CommentAuthor({
+    required this.imageUrl,
+    required this.name,
+  });
+
+  factory CommentAuthor.fromJson(Map<String, dynamic> json) => CommentAuthor(
+        imageUrl: json["imageUrl"],
+        name: json["name"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "imageUrl": imageUrl,
+        "name": name,
       };
 }

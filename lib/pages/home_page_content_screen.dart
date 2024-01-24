@@ -4,7 +4,7 @@ import 'package:fooderapp/models/food_list_model.dart';
 import 'package:fooderapp/services/food_list_service.dart';
 import 'package:fooderapp/theme/font_theme.dart';
 import 'package:fooderapp/utils/helpers.dart';
-import 'package:fooderapp/widgets/home_big_tile.dart';
+import 'package:fooderapp/widgets/food_list_tile.dart';
 import 'package:fooderapp/widgets/home_page_recent_tile.dart';
 
 class HomePageContent extends StatefulWidget {
@@ -157,7 +157,7 @@ class _HomePageContentState extends State<HomePageContent> {
                       separatorBuilder: (BuildContext context, int index) =>
                           const HorizontalSpacer(width: 20),
                       itemBuilder: (context, index) =>
-                          HomeBigTile(foodList[index]),
+                          FoodListTile(foodList[index]),
                     );
                   }
                 },
@@ -186,7 +186,7 @@ class _HomePageContentState extends State<HomePageContent> {
                       separatorBuilder: (BuildContext context, int index) =>
                           const HorizontalSpacer(width: 20),
                       itemBuilder: (context, index) =>
-                          HomeBigTile(foodList[index]),
+                          FoodListTile(foodList[index]),
                     );
                   }
                 },

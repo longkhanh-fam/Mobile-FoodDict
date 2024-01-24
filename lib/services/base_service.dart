@@ -30,8 +30,8 @@ class BaseService {
 
   _setupDio() {
     _dio.options.baseUrl = baseUrl; // Replace with your API base URL
-    _dio.options.connectTimeout = const Duration(seconds: 5); // 5 seconds
-    _dio.options.receiveTimeout = const Duration(seconds: 5); // 5 seconds
+    // _dio.options.connectTimeout = const Duration(seconds: 5); // 5 seconds
+    // _dio.options.receiveTimeout = const Duration(seconds: 5); // 5 seconds
 
     // Add interceptors for logging, headers, and error handling
     // _dio.interceptors.add(LogInterceptor(

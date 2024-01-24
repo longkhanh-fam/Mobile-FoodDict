@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:fooderapp/models/food_model.dart';
-import 'package:fooderapp/theme/font_theme.dart';
-import 'package:fooderapp/utils/helpers.dart';
+import 'package:fooderapp/services/food_service.dart';
+import 'package:fooderapp/widgets/comment_widget.dart';
 import 'package:fooderapp/widgets/nutrition_fact_card.dart';
 import 'package:fooderapp/widgets/recipe_card.dart';
 
 import '../config/colors/colors.dart';
 
 class DetailsDishScreen extends StatefulWidget {
-  final Food dish;
+  final int id;
 
-  const DetailsDishScreen({required this.dish, Key? key}) : super(key: key);
+  const DetailsDishScreen(this.id, {Key? key}) : super(key: key);
 
   @override
-  _DetailsDishScreenState createState() => _DetailsDishScreenState();
+  State<DetailsDishScreen> createState() => _DetailsDishScreenState();
 }
 
 class _DetailsDishScreenState extends State<DetailsDishScreen> {
@@ -24,13 +24,26 @@ class _DetailsDishScreenState extends State<DetailsDishScreen> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            DetailsDish(
-              dish: widget.dish,
-              closeOpen: () {
-                // Add your closeOpen logic here
-                // This is just a placeholder for the callback
+            FutureBuilder(
+              future: getFood(widget.id),
+              builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const CircularProgressIndicator(); // Show loading indicator
+                } else if (snapshot.hasError) {
+                  // Handle error state
+                  return Text('Error: ${snapshot.error}');
+                } else {
+                  Food food = snapshot.data;
+                  return DetailsDish(
+                    dish: food,
+                    closeOpen: () {
+                      // Add your closeOpen logic here
+                      // This is just a placeholder for the callback
+                    },
+                  );
+                }
               },
-            ),
+            )
           ],
         ),
       ),
@@ -53,7 +66,7 @@ class DetailsDish extends StatefulWidget {
 }
 
 class _DetailsDishState extends State<DetailsDish> {
-  bool isLiked = false;
+  late bool isLiked;
   int currentCardIndex = 0;
   late Food dish; // Declare dish here
 
@@ -65,6 +78,7 @@ class _DetailsDishState extends State<DetailsDish> {
     super.initState();
     // Initialize dish and cardContentsList in the initState method
     dish = widget.dish;
+    isLiked = dish.isFavourite!;
     cardContentsList = [
       RecipeCard(title: 'Ingredients', recipe: dish.ingredients ?? []),
       RecipeCard(title: 'Recipe', recipe: dish.recipe ?? []),
@@ -145,18 +159,27 @@ class _DetailsDishState extends State<DetailsDish> {
                   ),
                   const Spacer(),
                   IconButton(
-                    onPressed: () {},
-                    icon: const Icon(FluentIcons.share_ios_20_regular),
-                  ),
-                  IconButton(
-                    onPressed: () {
+                    onPressed: () async {
                       setState(() {
                         isLiked = !isLiked;
                       });
+                      await favoriteFoodList(dish.id!, !isLiked);
                     },
                     icon: isLiked
                         ? const Icon(FluentIcons.heart_20_filled)
                         : const Icon(FluentIcons.heart_20_regular),
+                  ),
+                  IconButton(
+                    onPressed: () {
+                      // Show the CommentWidget when the button is pressed
+                      showModalBottomSheet(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return CommentWidget(dish.id!, dish.comments!);
+                        },
+                      );
+                    },
+                    icon: const Icon(FluentIcons.comment_20_regular),
                   ),
                 ],
               ),

@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:fooderapp/models/food_model.dart';
+import 'package:fooderapp/services/food_service.dart';
 import 'package:image_picker/image_picker.dart';
 
 class AddFoodScreen extends StatefulWidget {
@@ -19,6 +20,19 @@ class _AddFoodScreenState extends State<AddFoodScreen> {
   String? selectedImagePath;
   bool hasSelectedImage = false;
   int currentCardIndex = 0;
+
+  //nutrition fact
+    final TextEditingController _sugarController = TextEditingController();
+  final TextEditingController _sodiumController = TextEditingController();
+  final TextEditingController _proteinController = TextEditingController();
+  final TextEditingController _caloriesController = TextEditingController();
+  final TextEditingController _totalFatController = TextEditingController();
+  final TextEditingController _cholesterolController = TextEditingController();
+  final TextEditingController _servingSizeController = TextEditingController();
+  final TextEditingController _dietaryFiberController = TextEditingController();
+  final TextEditingController _saturatedFatController = TextEditingController();
+  final TextEditingController _totalCarbohydrateController = TextEditingController();
+
 
   Future<void> _pickImage() async {
     final pickedFile =
@@ -378,96 +392,106 @@ class _AddFoodScreenState extends State<AddFoodScreen> {
     );
   }
 
-  Widget buildNutritionFactsInput() {
-    // You can use TextFormField or other appropriate widgets for each nutrition fact
+   Widget buildNutritionFactsInput() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        // Implement your input fields for Nutrition Fact
-        // For example:
         TextFormField(
+          controller: _sugarController,
           decoration: const InputDecoration(labelText: 'Sugar'),
-          onChanged: (value) {
-            setState(() {
-              nutritionFact?.sugar = value;
-            });
-          },
         ),
         TextFormField(
+          controller: _sodiumController,
           decoration: const InputDecoration(labelText: 'Sodium'),
-          onChanged: (value) {
-            setState(() {
-              nutritionFact?.sodium = value;
-            });
-          },
         ),
         TextFormField(
+          controller: _proteinController,
           decoration: const InputDecoration(labelText: 'Protein'),
-          onChanged: (value) {
-            setState(() {
-              nutritionFact?.protein = value;
-            });
-          },
         ),
         TextFormField(
+          controller: _caloriesController,
           decoration: const InputDecoration(labelText: 'Calories'),
-          onChanged: (value) {
-            setState(() {
-              nutritionFact?.calories = value;
-            });
-          },
         ),
         TextFormField(
+          controller: _totalFatController,
           decoration: const InputDecoration(labelText: 'TotalFat'),
-          onChanged: (value) {
-            setState(() {
-              nutritionFact?.totalFat = value;
-            });
-          },
         ),
         TextFormField(
+          controller: _cholesterolController,
           decoration: const InputDecoration(labelText: 'Cholesterol'),
-          onChanged: (value) {
-            setState(() {
-              nutritionFact?.cholesterol = value;
-            });
-          },
         ),
         TextFormField(
+          controller: _servingSizeController,
           decoration: const InputDecoration(labelText: 'ServingSize'),
-          onChanged: (value) {
-            setState(() {
-              nutritionFact?.servingSize = value;
-            });
-          },
         ),
         TextFormField(
+          controller: _dietaryFiberController,
           decoration: const InputDecoration(labelText: 'DietaryFiber'),
-          onChanged: (value) {
-            setState(() {
-              nutritionFact?.dietaryFiber = value;
-            });
-          },
         ),
         TextFormField(
+          controller: _saturatedFatController,
           decoration: const InputDecoration(labelText: 'SaturatedFat'),
-          onChanged: (value) {
-            setState(() {
-              nutritionFact?.saturatedFat = value;
-            });
-          },
         ),
         TextFormField(
+          controller: _totalCarbohydrateController,
           decoration: const InputDecoration(labelText: 'TotalCarbohydrate'),
-          onChanged: (value) {
-            setState(() {
-              nutritionFact?.totalCarbohydrate = value;
-            });
-          },
         ),
       ],
     );
   }
 
-  void saveFood() {}
+  Future<void> saveFood() async {
+
+    // Create a new Food object with the data entered by the user
+    final NutritionFact newNutritionFact = NutritionFact(
+      sugar: _sugarController.text,
+      sodium: _sodiumController.text,
+      protein: _proteinController.text,
+      calories: _caloriesController.text,
+      totalFat: _totalFatController.text,
+      cholesterol: _cholesterolController.text,
+      servingSize: _servingSizeController.text,
+      dietaryFiber: _dietaryFiberController.text,
+      saturatedFat: _saturatedFatController.text,
+      totalCarbohydrate: _totalCarbohydrateController.text,
+    );
+
+    // Create a new Food object with the data entered by the user
+    final Food newFood = Food(
+      //id: -1,
+      title: _nameController.text,
+      body: 'body',
+      images: ["selectedImagePath!"],
+      ingredients: ingredients,
+      recipe: recipe,
+      nutritionFact: newNutritionFact,
+    );
+
+    // Add the new food to the list of foods
+    //foods.add(newFood);
+
+    // Navigate back to the home screen
+    //Navigator.pop(context);
+    debugPrint(newFood.id.toString());
+    
+    debugPrint(newFood.title);
+    debugPrint(newFood.body);
+    debugPrint(newFood.images.toString());
+    debugPrint(newFood.ingredients.toString());
+    debugPrint(newFood.recipe.toString());
+    if (newFood.nutritionFact != null) {
+      debugPrint(newFood.nutritionFact!.sugar);
+    } else {
+      debugPrint("nutritionFact is null");
+    }
+
+
+  try {
+
+    await postFood(newFood);
+  } catch (e) {
+    print("Error posting food: $e");
+  }
+    
+  }
 }

@@ -1,16 +1,32 @@
-import 'package:fooderapp/models/base_model.dart';
+import 'dart:convert';
 
-class User implements BaseModel {
-  int? id;
+import 'package:fooderapp/models/food_list_model.dart';
+
+User userFromJson(String str) => User.fromJson(json.decode(str));
+
+String userToJson(User data) => json.encode(data.toJson());
+
+class User {
+  int id;
   String name;
-  String? bio;
+  String bio;
   String? imageUrl;
+  List<FoodListFood> foods;
+  List<FoodList> foodLists;
+  int followers;
+  int following;
+  bool? isFollowed;
 
   User({
-    this.id,
+    required this.id,
     required this.name,
-    this.bio,
+    required this.bio,
     this.imageUrl,
+    required this.foods,
+    required this.foodLists,
+    required this.followers,
+    required this.following,
+    this.isFollowed,
   });
 
   factory User.fromJson(Map<String, dynamic> json) => User(
@@ -18,13 +34,24 @@ class User implements BaseModel {
         name: json["name"],
         bio: json["bio"],
         imageUrl: json["imageUrl"],
+        foods: List<FoodListFood>.from(
+            json["foods"].map((x) => FoodListFood.fromJson(x))),
+        foodLists: List<FoodList>.from(
+            json["foodLists"].map((x) => FoodList.fromJson(x))),
+        followers: json["followers"],
+        following: json["following"],
+        isFollowed: json["isFollowed"],
       );
 
-  @override
   Map<String, dynamic> toJson() => {
         "id": id,
         "name": name,
         "bio": bio,
         "imageUrl": imageUrl,
+        "foods": List<dynamic>.from(foods.map((x) => x.toJson())),
+        "foodLists": List<dynamic>.from(foodLists.map((x) => x.toJson())),
+        "followers": followers,
+        "following": following,
+        "isFollowed": isFollowed,
       };
 }
