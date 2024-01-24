@@ -1,5 +1,6 @@
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
+
 import 'package:fooderapp/models/food_model.dart';
 import 'package:fooderapp/pages/add_food_screen.dart';
 import 'package:fooderapp/services/food_service.dart';
@@ -49,8 +50,12 @@ late Future<List<Food>> _foodList;
               },
             );
           }
+
         },
+        backgroundColor: Colors.blue,
+        child: const Icon(Icons.add),
       ),
+
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.push(

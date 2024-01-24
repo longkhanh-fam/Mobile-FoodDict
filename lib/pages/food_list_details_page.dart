@@ -20,7 +20,7 @@ class _FoodListDetailsPageState extends State<FoodListDetailsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.brown[900],
+      backgroundColor: Colors.transparent,
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.transparent,
@@ -44,6 +44,8 @@ class _FoodListDetailsPageState extends State<FoodListDetailsPage> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
+                              UserWidget(foodList.author!),
+                              const SizedBox(height: 10),
                               // Album cover
                               Center(
                                 child: Container(
@@ -71,12 +73,26 @@ class _FoodListDetailsPageState extends State<FoodListDetailsPage> {
                                 ),
                               ),
                               const SizedBox(height: 10),
-                              UserWidget(foodList.author!),
+
                               // Album name
-                              Text(
-                                foodList.title,
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.w500, fontSize: 30),
+                              Row(
+                                children: [
+                                  Text(
+                                    foodList.title,
+                                    style: const TextStyle(
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: 30),
+                                  ),
+                                  IconButton(
+                                      onPressed: () async {
+                                        await favoriteFoodList(
+                                            widget.id, !foodList.isFavourite);
+                                        setState(() {});
+                                      },
+                                      icon: foodList.isFavourite
+                                          ? favouriteIcon
+                                          : unfavouriteIcon),
+                                ],
                               ),
                               Text(
                                 foodList.description,
@@ -86,25 +102,7 @@ class _FoodListDetailsPageState extends State<FoodListDetailsPage> {
                                     color: greyColor),
                               ),
                               const SizedBox(height: 10),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: <Widget>[
-                                  Row(
-                                    children: <Widget>[
-                                      IconButton(
-                                          onPressed: () async {
-                                            await favoriteFoodList(widget.id,
-                                                !foodList.isFavourite);
-                                            setState(() {});
-                                          },
-                                          icon: foodList.isFavourite
-                                              ? favouriteIcon
-                                              : unfavouriteIcon),
-                                    ],
-                                  )
-                                ],
-                              ),
+
                               const VerticalSpacer(height: 5),
                               ListView.separated(
                                 primary: false,
