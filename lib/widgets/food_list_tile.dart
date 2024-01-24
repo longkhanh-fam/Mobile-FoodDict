@@ -5,6 +5,7 @@ import 'package:fooderapp/utils/helpers.dart';
 
 class FoodListTile extends StatelessWidget {
   final FoodList foodList;
+
   const FoodListTile(this.foodList, {Key? key}) : super(key: key);
 
   @override
@@ -12,28 +13,46 @@ class FoodListTile extends StatelessWidget {
     return GestureDetector(
       onTap: () => Navigator.of(context).push(MaterialPageRoute(
           builder: (context) => FoodListDetailsPage(id: foodList.id))),
-      child: SizedBox(
+      child: Container(
         width: 150,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(12),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.5),
+              spreadRadius: 2,
+              blurRadius: 5,
+              offset: const Offset(0, 3),
+            ),
+          ],
+        ),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             ClipRRect(
-              borderRadius: BorderRadius.circular(8.0),
-              child: SizedBox(
+              borderRadius:
+                  const BorderRadius.vertical(top: Radius.circular(12)),
+              child: Image.network(
+                foodList.imageUrl,
                 width: 150,
-                height: 150,
-                child: Image.network(foodList.imageUrl),
+                height: 120,
+                fit: BoxFit.cover,
               ),
             ),
-            const VerticalSpacer(height: 10),
-            Text(
-              foodList.title,
-              softWrap: true,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(
-                color: Colors.grey[500],
+            const SizedBox(height: 8),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+              child: Text(
+                foodList.title,
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 14,
+                ),
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
               ),
-            )
+            ),
+            const SizedBox(height: 4),
           ],
         ),
       ),

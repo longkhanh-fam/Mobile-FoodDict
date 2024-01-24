@@ -8,12 +8,16 @@ import 'package:fooderapp/pages/home_page.dart';
 import 'package:fooderapp/pages/library_page.dart';
 import 'package:fooderapp/pages/login_page.dart';
 import 'package:fooderapp/pages/profile_page.dart';
+import 'package:fooderapp/pages/food_list_details_page.dart';
 
 class RouteGenerator {
   static Route<dynamic> generatorRoute(RouteSettings settings) {
     switch (settings.name) {
       case homePage:
-        return MaterialPageRoute(builder: ((_) => const HomePage()));
+        return MaterialPageRoute(
+            builder: ((_) => const FoodListDetailsPage(
+                  id: 13,
+                )));
       case loginPage:
         return MaterialPageRoute(builder: ((_) => const LoginPage()));
       case errorPage:

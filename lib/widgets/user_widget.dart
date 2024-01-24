@@ -14,7 +14,7 @@ class UserWidget extends StatelessWidget {
           .push(MaterialPageRoute(builder: (_) => UserScreen(author.id))),
       child: Container(
         decoration: const BoxDecoration(
-          color: Colors.black,
+          color: Colors.black54,
           borderRadius: BorderRadius.all(Radius.circular(10.0)),
         ),
         padding: const EdgeInsets.all(8),
