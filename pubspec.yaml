@@ -38,8 +38,11 @@ dependencies:
   form_builder_image_picker: ^4.0.0
   form_builder_validators: ^9.1.0
   google_sign_in: ^6.2.1
-  image_picker: ^0.8.9
+  image_picker: 0.8.9
   provider: ^6.0.5
+  tflite_flutter: ^0.10.4
+  image: ^3.0.1
+  camera: ^0.10.5+9
   shared_preferences: ^2.2.2
   talker_dio_logger: ^2.4.0
   fluentui_system_icons: ^1.1.189
@@ -74,6 +77,7 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/images/
+    - assets/food_model.tflite
 
   # To add assets to your application, add an assets section, like this:
   # assets:

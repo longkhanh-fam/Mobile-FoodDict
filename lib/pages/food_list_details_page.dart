@@ -65,11 +65,16 @@ class _FoodListDetailsPageState extends State<FoodListDetailsPage> {
                                   height: 300,
                                   child: ClipRRect(
                                     borderRadius: BorderRadius.circular(10.0),
-                                    child: Image.network(
-                                      foodList.imageUrl,
-                                      fit: BoxFit.cover,
+                                    child: Container(
+                                      width: 300,  // Specify a width
+                                      height: 100,  // Specify a height
+                                      child: Image.network(
+                                        foodList.imageUrl,
+                                        fit: BoxFit.cover,
+                                      ),
                                     ),
-                                  ),
+                                  )
+
                                 ),
                               ),
                               const SizedBox(height: 10),
@@ -77,12 +82,14 @@ class _FoodListDetailsPageState extends State<FoodListDetailsPage> {
                               // Album name
                               Row(
                                 children: [
+                                  Expanded(child: 
                                   Text(
                                     foodList.title,
                                     style: const TextStyle(
                                         fontWeight: FontWeight.w500,
-                                        fontSize: 30),
-                                  ),
+                                        fontSize: 30,
+                                        overflow: TextOverflow.ellipsis,),
+                                  ),),
                                   IconButton(
                                       onPressed: () async {
                                         await favoriteFoodList(
@@ -99,7 +106,8 @@ class _FoodListDetailsPageState extends State<FoodListDetailsPage> {
                                 style: TextStyle(
                                     fontWeight: FontWeight.normal,
                                     fontSize: 13,
-                                    color: greyColor),
+                                    color: greyColor,
+                                    overflow: TextOverflow.ellipsis,),
                               ),
                               const SizedBox(height: 10),
 

@@ -4,7 +4,6 @@ import 'package:fooderapp/models/food_model.dart';
 import 'package:fooderapp/pages/detail_dish_screen.dart';
 import 'package:fooderapp/services/food_service.dart';
 import 'package:fooderapp/utils/helpers.dart';
-import 'package:fooderapp/widgets/genre_grid_view.dart';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({super.key});
@@ -61,57 +60,57 @@ class _SearchScreenState extends State<SearchScreen> {
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(10, 30, 15, 0),
-              child: Text(
-                isSearching ? 'Search Results' : 'Genres',
-                style: const TextStyle(
-                  fontSize: 20.0,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-            ),
-            Visibility(
-              visible: !isSearching,
-              child: Expanded(
-                child: GenreGridView(),
-              ),
-            ),
+            // Padding(
+            //   padding: const EdgeInsets.fromLTRB(10, 30, 15, 0),
+            //   child: Text(
+            //     isSearching ? 'Search Results' : 'Genres',
+            //     style: const TextStyle(
+            //       fontSize: 20.0,
+            //       fontWeight: FontWeight.w500,
+            //     ),
+            //   ),
+            // ),
+            // Visibility(
+            //   visible: !isSearching,
+            //   child: Expanded(
+            //     child: GenreGridView(),
+            //   ),
+            // ),
             Visibility(
               visible: isSearching,
               child: Expanded(
                 child: Column(
                   children: [
                     // The new row to be displayed above the search results
-                    Row(
-                    children: <Widget>[
-                      Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          color: Colors.grey[800],
-                        ),
-                        padding: const EdgeInsets.all(12),
-                        child: const Text(
-                          'Music',
-                          style: TextStyle(
-                              fontSize: 15, fontWeight: FontWeight.w400),
-                        ),
-                      ),
-                      const HorizontalSpacer(width: 10),
-                      Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          color: Colors.grey[800],
-                        ),
-                        padding: const EdgeInsets.all(12),
-                        child: const Text(
-                          'Podcasts & Shows',
-                          style: TextStyle(
-                              fontSize: 15, fontWeight: FontWeight.w400),
-                        ),
-                      )
-                    ],
-                  ),
+                  //   Row(
+                  //   children: <Widget>[
+                  //     Container(
+                  //       decoration: BoxDecoration(
+                  //         borderRadius: BorderRadius.circular(20),
+                  //         color: Colors.grey[800],
+                  //       ),
+                  //       padding: const EdgeInsets.all(12),
+                  //       child: const Text(
+                  //         'Music',
+                  //         style: TextStyle(
+                  //             fontSize: 15, fontWeight: FontWeight.w400),
+                  //       ),
+                  //     ),
+                  //     const HorizontalSpacer(width: 10),
+                  //     Container(
+                  //       decoration: BoxDecoration(
+                  //         borderRadius: BorderRadius.circular(20),
+                  //         color: Colors.grey[800],
+                  //       ),
+                  //       padding: const EdgeInsets.all(12),
+                  //       child: const Text(
+                  //         'Podcasts & Shows',
+                  //         style: TextStyle(
+                  //             fontSize: 15, fontWeight: FontWeight.w400),
+                  //       ),
+                  //     )
+                  //   ],
+                  // ),
                 Expanded(
                   child: FutureBuilder<List<Food>>(
                     future: _foodList,

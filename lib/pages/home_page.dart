@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fooderapp/models/food_model.dart';
+import 'package:fooderapp/pages/camera_screen.dart';
 import 'package:fooderapp/pages/detail_dish_screen.dart';
 import 'package:fooderapp/pages/edit_food_screen.dart';
 import 'package:fooderapp/pages/home_page_content_screen.dart';
@@ -67,10 +68,11 @@ class _HomePageState extends State<HomePage> {
 //   );
   final List<Widget> _screens = [
     const HomePageContent(),
-    NewsFeedScreen(),
-    SearchScreen(),
-
-    EditFoodScreen( id: 200,),
+    const NewsFeedScreen(),
+    const CameraScreen(),
+    const SearchScreen(),
+    const LibraryPage()
+    
 
   ];
 
@@ -90,9 +92,14 @@ class _HomePageState extends State<HomePage> {
               label: 'Foodfeeds',
               activeIcon: Icon(Icons.food_bank_outlined)),
           BottomNavigationBarItem(
+            icon: Icon(Icons.camera_enhance_rounded),
+            label: 'Detect Food',
+            activeIcon: Icon(Icons.library_music_rounded)),
+          BottomNavigationBarItem(
               icon: Icon(Icons.search),
               label: 'Search',
               activeIcon: Icon(Icons.search_outlined)),
+
           BottomNavigationBarItem(
               icon: Icon(Icons.library_music_outlined),
               label: 'Library',

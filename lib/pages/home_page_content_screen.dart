@@ -66,33 +66,33 @@ class _HomePageContentState extends State<HomePageContent> {
             const VerticalSpacer(height: 20),
 
             //1st capsules
-            Row(
-              children: <Widget>[
-                Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    color: Colors.grey[800],
-                  ),
-                  padding: const EdgeInsets.all(12),
-                  child: const Text(
-                    'Music',
-                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.w400),
-                  ),
-                ),
-                const HorizontalSpacer(width: 10),
-                Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    color: Colors.grey[800],
-                  ),
-                  padding: const EdgeInsets.all(12),
-                  child: const Text(
-                    'Podcasts & Shows',
-                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.w400),
-                  ),
-                )
-              ],
-            ),
+            // Row(
+            //   children: <Widget>[
+            //     Container(
+            //       decoration: BoxDecoration(
+            //         borderRadius: BorderRadius.circular(20),
+            //         color: Colors.grey[800],
+            //       ),
+            //       padding: const EdgeInsets.all(12),
+            //       child: const Text(
+            //         'Music',
+            //         style: TextStyle(fontSize: 15, fontWeight: FontWeight.w400),
+            //       ),
+            //     ),
+            //     const HorizontalSpacer(width: 10),
+            //     Container(
+            //       decoration: BoxDecoration(
+            //         borderRadius: BorderRadius.circular(20),
+            //         color: Colors.grey[800],
+            //       ),
+            //       padding: const EdgeInsets.all(12),
+            //       child: const Text(
+            //         'Podcasts & Shows',
+            //         style: TextStyle(fontSize: 15, fontWeight: FontWeight.w400),
+            //       ),
+            //     )
+            //   ],
+            // ),
 
             const VerticalSpacer(height: 20),
             //Tiles

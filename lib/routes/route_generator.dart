@@ -16,9 +16,7 @@ class RouteGenerator {
     switch (settings.name) {
       case homePage:
         return MaterialPageRoute(
-            builder: ((_) => const FoodListDetailsPage(
-                  id: 13,
-                )));
+            builder: ((_) => const HomePage()));
       case loginPage:
         return MaterialPageRoute(builder: ((_) => const LoginPage()));
       case errorPage:

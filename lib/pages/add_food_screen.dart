@@ -460,7 +460,7 @@ class _AddFoodScreenState extends State<AddFoodScreen> {
       await postFood({
       "title": _nameController.text,
       "body": _descriptionController.text,
-      "images": [imageUrls ?? ""],
+      "images": imageUrls ?? "",
       "ingredients": ingredients,
       "recipe": recipe,
       "nutrition_fact": {

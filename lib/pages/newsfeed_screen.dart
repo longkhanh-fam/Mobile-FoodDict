@@ -52,8 +52,6 @@ late Future<List<Food>> _foodList;
           }
 
         },
-        backgroundColor: Colors.blue,
-        child: const Icon(Icons.add),
       ),
 
       floatingActionButton: FloatingActionButton(
