@@ -21,6 +21,7 @@ class Food {
   bool? isPublic;
   List<Comment>? comments;
   List<dynamic>? categories;
+  CommentAuthor? author;
   int? likersCount;
   bool? isFavourite;
 
@@ -39,6 +40,7 @@ class Food {
     this.categories,
     this.likersCount,
     this.isFavourite,
+    this.author
   });
 
   factory Food.fromJson(Map<String, dynamic> json) => Food(
@@ -61,6 +63,9 @@ class Food {
             : List<dynamic>.from(json["categories"].map((x) => x)),
         likersCount: json["likers_count"],
         isFavourite: json["isFavourite"],
+        author: json["author"] == null
+            ? null
+            : CommentAuthor.fromJson(json["author"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -78,6 +83,7 @@ class Food {
         "categories": List<dynamic>.from(categories!.map((x) => x)),
         "likers_count": likersCount,
         "isFavourite": isFavourite,
+        "author": author?.toJson(),
       };
 }
 
@@ -121,7 +127,7 @@ class NutritionFact {
 
   factory NutritionFact.fromJson(Map<String, dynamic> json) => NutritionFact(
         sugar: _parseCalories(json["sugar"]),
-        sodium: _parseCalories(json["sodium"]),
+        sodium: _parseCalories(json["Sodium"]),
         protein: _parseCalories(json["protein"]),
         calories: _parseCalories(json["calories"]),
         totalFat: _parseCalories(json["total_fat"]),
