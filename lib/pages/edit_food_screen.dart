@@ -6,14 +6,16 @@ import 'package:fooderapp/services/food_service.dart';
 import 'package:fooderapp/utils/upload_images.dart';
 import 'package:image_picker/image_picker.dart';
 
-class AddFoodScreen extends StatefulWidget {
-  const AddFoodScreen({super.key});
+class EditFoodScreen extends StatefulWidget {
+  final int id;
+
+  const EditFoodScreen({Key? key, required this.id}) : super(key: key);
 
   @override
-  _AddFoodScreenState createState() => _AddFoodScreenState();
+  _EditFoodScreenState createState() => _EditFoodScreenState();
 }
 
-class _AddFoodScreenState extends State<AddFoodScreen> {
+class _EditFoodScreenState extends State<EditFoodScreen> {
   final TextEditingController _nameController = TextEditingController();
   List<String> ingredients = [];
   List<String> recipe = [];
@@ -21,21 +23,22 @@ class _AddFoodScreenState extends State<AddFoodScreen> {
   String? selectedImagePath;
   bool hasSelectedImage = false;
   int currentCardIndex = 0;
+  late Food food;
 
    final TextEditingController _descriptionController = TextEditingController();
 
 
   //nutrition fact
-    final TextEditingController _sugarController = TextEditingController();
-  final TextEditingController _sodiumController = TextEditingController();
-  final TextEditingController _proteinController = TextEditingController();
-  final TextEditingController _caloriesController = TextEditingController();
-  final TextEditingController _totalFatController = TextEditingController();
-  final TextEditingController _cholesterolController = TextEditingController();
-  final TextEditingController _servingSizeController = TextEditingController();
-  final TextEditingController _dietaryFiberController = TextEditingController();
-  final TextEditingController _saturatedFatController = TextEditingController();
-  final TextEditingController _totalCarbohydrateController = TextEditingController();
+  late TextEditingController _sugarController = TextEditingController();
+  late TextEditingController _sodiumController = TextEditingController();
+  late TextEditingController _proteinController = TextEditingController();
+  late TextEditingController _caloriesController = TextEditingController();
+  late TextEditingController _totalFatController = TextEditingController();
+  late TextEditingController _cholesterolController = TextEditingController();
+  late TextEditingController _servingSizeController = TextEditingController();
+  late TextEditingController _dietaryFiberController = TextEditingController();
+  late TextEditingController _saturatedFatController = TextEditingController();
+  late TextEditingController _totalCarbohydrateController = TextEditingController();
 
 
 
@@ -55,11 +58,93 @@ class _AddFoodScreenState extends State<AddFoodScreen> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    fetchFoodDetails();
+  }
+
+  Future<void> fetchFoodDetails() async {
+    food = await getFood(widget.id);
+    setState(() {
+      // Set the controllers and variables with fetched data
+      _nameController.text = food.title;
+      _descriptionController.text = food.body;
+
+      nutritionFact = food.nutritionFact;
+      // Set the initial values for nutrition fact controllers
+      _sugarController.text = food.nutritionFact?.sugar ?? '';
+      _sodiumController.text = food.nutritionFact?.sodium ?? '';
+      _proteinController.text = nutritionFact?.protein ?? '';
+      _caloriesController.text = nutritionFact?.calories ?? '';
+      _totalFatController.text = nutritionFact?.totalFat ?? '';
+      _cholesterolController.text = nutritionFact?.cholesterol ?? '';
+      _servingSizeController.text = nutritionFact?.servingSize ?? '';
+      _dietaryFiberController.text = nutritionFact?.dietaryFiber ?? '';
+      _saturatedFatController.text = nutritionFact?.saturatedFat ?? '';
+      _totalCarbohydrateController.text = nutritionFact?.totalCarbohydrate ?? '';
+
+
+      // You may also set the initial values for ingredients and recipe if needed
+      ingredients = food.ingredients ?? [];
+      recipe = food.recipe ?? [];
+    });
+  }
+
+  Future<void> saveFood() async {
+    String? imageUrl;
+
+  if (hasSelectedImage) {
+    // If a new image is selected, upload it and get the URL
+    final imageUrls = await uploadImages([uploadImage]);
+    imageUrl = imageUrls?.isNotEmpty == true ? imageUrls![0] : null;
+  } else {
+    // If no new image is selected, use the existing image URL
+    imageUrl = food.images?.isNotEmpty == true ? food.images![0] : null;
+  }
+    try {
+      await updateFood({
+      "title": _nameController.text,
+      "body": _descriptionController.text,
+      "images": [imageUrl ?? ""],
+      "ingredients": ingredients,
+      "recipe": recipe,
+      "nutrition_fact": {
+        "sugar": _sugarController.text,
+        "sodium": _sodiumController.text,
+        "protein": _proteinController.text,
+        "calories": _caloriesController.text,
+        "totalFat": _totalFatController.text,
+        "cholesterol": _cholesterolController.text,
+        "servingSize": _servingSizeController.text,
+        "dietaryFiber": _dietaryFiberController.text,
+        "saturatedFat": _saturatedFatController.text,
+        "totalCarbohydrate": _totalCarbohydrateController.text,
+      },
+      //"authorId": 1,
+      //"createdAt": "2024-01-24T11:40:49.799455",  // Replace with the actual value from DateTime.now()
+      "isPublic": false
+      }, widget.id
+    );
+    } catch (e) {
+      print("Error posting food: $e");
+    }
+    // Show a SnackBar to notify the successful edit
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Food edited successfully'),
+        ),
+      );
+    Navigator.pop(context);
+    Navigator.pop(context);
+  }
+
+  @override
   Widget build(BuildContext context) {
+    debugPrint('EditFoodScreen: build()${food.nutritionFact?.sugar}');
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'Create Your Food',
+          'Edit Your Food',
           style: TextStyle(
             fontSize: 25.0,
             fontWeight: FontWeight.w500,
@@ -83,7 +168,7 @@ class _AddFoodScreenState extends State<AddFoodScreen> {
                     child: Container(
                       height: 300,
                       width: 200,
-                      color: Colors.grey[300], // Màu nền tạm thời cho ảnh icon
+                      color: Colors.grey[300],
                       child: hasSelectedImage
                           ? Stack(
                               fit: StackFit.expand,
@@ -111,10 +196,17 @@ class _AddFoodScreenState extends State<AddFoodScreen> {
                                 ),
                               ],
                             )
-                          : const Icon(Icons.add_a_photo,
-                              size: 48, color: Colors.black),
+                          : (food.images != null) // Check if food has an image URL
+                              ? Image.network(
+                                  food.images![0],
+                                  height: 400,
+                                  width: 200,
+                                  fit: BoxFit.cover,
+                                )
+                              : const Icon(Icons.add_a_photo, size: 48, color: Colors.black),
                     ),
                   ),
+
                 ],
               ),
 
@@ -406,90 +498,53 @@ class _AddFoodScreenState extends State<AddFoodScreen> {
   }
 
    Widget buildNutritionFactsInput() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        TextFormField(
-          controller: _sugarController,
-          decoration: const InputDecoration(labelText: 'Sugar'),
-        ),
-        TextFormField(
-          controller: _sodiumController,
-          decoration: const InputDecoration(labelText: 'Sodium'),
-        ),
-        TextFormField(
-          controller: _proteinController,
-          decoration: const InputDecoration(labelText: 'Protein'),
-        ),
-        TextFormField(
-          controller: _caloriesController,
-          decoration: const InputDecoration(labelText: 'Calories'),
-        ),
-        TextFormField(
-          controller: _totalFatController,
-          decoration: const InputDecoration(labelText: 'TotalFat'),
-        ),
-        TextFormField(
-          controller: _cholesterolController,
-          decoration: const InputDecoration(labelText: 'Cholesterol'),
-        ),
-        TextFormField(
-          controller: _servingSizeController,
-          decoration: const InputDecoration(labelText: 'ServingSize'),
-        ),
-        TextFormField(
-          controller: _dietaryFiberController,
-          decoration: const InputDecoration(labelText: 'DietaryFiber'),
-        ),
-        TextFormField(
-          controller: _saturatedFatController,
-          decoration: const InputDecoration(labelText: 'SaturatedFat'),
-        ),
-        TextFormField(
-          controller: _totalCarbohydrateController,
-          decoration: const InputDecoration(labelText: 'TotalCarbohydrate'),
-        ),
-      ],
-    );
-  }
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.stretch,
+    children: [
+      TextFormField(
+        controller: _sugarController,
+        decoration: const InputDecoration(labelText: 'Sugar'),
+      ),
+      TextFormField(
+        controller: _sodiumController,
+        decoration: const InputDecoration(labelText: 'Sodium'),
+      ),
+      TextFormField(
+        controller: _proteinController,
+        decoration: const InputDecoration(labelText: 'Protein'),
+      ),
+      TextFormField(
+        controller: _caloriesController,
+        decoration: const InputDecoration(labelText: 'Calories'),
+      ),
+      TextFormField(
+        controller: _totalFatController,
+        decoration: const InputDecoration(labelText: 'TotalFat'),
+      ),
+      TextFormField(
+        controller: _cholesterolController,
+        decoration: const InputDecoration(labelText: 'Cholesterol'),
+      ),
+      TextFormField(
+        controller: _servingSizeController,
+        decoration: const InputDecoration(labelText: 'ServingSize'),
+      ),
+      TextFormField(
+        controller: _dietaryFiberController,
+        decoration: const InputDecoration(labelText: 'DietaryFiber'),
+      ),
+      TextFormField(
+        controller: _saturatedFatController,
+        decoration: const InputDecoration(labelText: 'SaturatedFat'),
+      ),
+      TextFormField(
+        controller: _totalCarbohydrateController,
+        decoration: const InputDecoration(labelText: 'TotalCarbohydrate'),
+      ),
+    ],
+  );
+}
 
-  Future<void> saveFood() async {
 
-    final imageUrls = await uploadImages([uploadImage]);
-    try {
-      await postFood({
-      "title": _nameController.text,
-      "body": _descriptionController.text,
-      "images": [imageUrls ?? ""],
-      "ingredients": ingredients,
-      "recipe": recipe,
-      "nutrition_fact": {
-        "sugar": _sugarController.text,
-        "sodium": _sodiumController.text,
-        "protein": _proteinController.text,
-        "calories": _caloriesController.text,
-        "totalFat": _totalFatController.text,
-        "cholesterol": _cholesterolController.text,
-        "servingSize": _servingSizeController.text,
-        "dietaryFiber": _dietaryFiberController.text,
-        "saturatedFat": _saturatedFatController.text,
-        "totalCarbohydrate": _totalCarbohydrateController.text,
-      },
-      //"authorId": 1,
-      //"createdAt": "2024-01-24T11:40:49.799455",  // Replace with the actual value from DateTime.now()
-      "isPublic": false
-    }
-    );
-    } catch (e) {
-      print("Error posting food: $e");
-    }
-    ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Food Added successfully'),
-        ),
-      );
-    Navigator.pop(context);
-    Navigator.pop(context);
-
-  }
+  // 
 }

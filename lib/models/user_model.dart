@@ -9,7 +9,7 @@ String userToJson(User data) => json.encode(data.toJson());
 class User {
   int id;
   String name;
-  String bio;
+  String? bio;
   String? imageUrl;
   List<FoodListFood> foods;
   List<FoodList> foodLists;
@@ -20,7 +20,7 @@ class User {
   User({
     required this.id,
     required this.name,
-    required this.bio,
+    this.bio,
     this.imageUrl,
     required this.foods,
     required this.foodLists,

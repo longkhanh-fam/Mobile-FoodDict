@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:fooderapp/models/food_model.dart';
+import 'package:fooderapp/pages/add_food_screen.dart';
+import 'package:fooderapp/pages/edit_food_screen.dart';
 import 'package:fooderapp/services/food_service.dart';
 import 'package:fooderapp/widgets/comment_widget.dart';
 import 'package:fooderapp/widgets/nutrition_fact_card.dart';
@@ -18,6 +20,7 @@ class DetailsDishScreen extends StatefulWidget {
 }
 
 class _DetailsDishScreenState extends State<DetailsDishScreen> {
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -95,6 +98,51 @@ class _DetailsDishState extends State<DetailsDish> {
     return formattedFacts;
   }
 
+  Future<void> _showDeleteConfirmationDialog(BuildContext context) async {
+      return showDialog<void>(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Delete Food'),
+            content: SingleChildScrollView(
+              child: ListBody(
+                children: <Widget>[
+                  Text('Are you sure you want to delete this food?'),
+                ],
+              ),
+            ),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop(); // Dismiss the dialog
+                },
+                child: Text('Cancel'),
+              ),
+              TextButton(
+                onPressed: () async {
+                  // Perform delete operation here
+                  // Add your delete logic here
+                    await deleteFood(widget.dish.id!);
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text('Food Deleted successfully'),
+                    ),
+                  );
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                        builder: (BuildContext context) => super.widget));
+
+                },
+                child: Text('Delete'),
+              ),
+            ],
+          );
+        },
+      );
+    }
+
+  
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -126,9 +174,36 @@ class _DetailsDishState extends State<DetailsDish> {
             style: const TextStyle(fontSize: 20, color: Colors.white70),
           ),
           actions: [
-            IconButton(
-              onPressed: () {},
-              icon: const Icon(FluentIcons.more_horizontal_20_regular),
+            PopupMenuButton(
+              icon: const Icon(
+                Icons.more_horiz,
+                color: Colors.white,
+              ),
+              itemBuilder: (context) => [
+                const PopupMenuItem(
+                  value: 'edit',
+                  child: Text('Edit'),
+                ),
+                const PopupMenuItem(
+                  value: 'delete',
+                  child: Text('Delete'),
+                ),
+                // Add more items as needed
+              ],
+              onSelected: (value) {
+                // Handle menu item selection
+                if (value == 'delete') {
+                   _showDeleteConfirmationDialog(context);
+                } else if (value == 'edit') {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => EditFoodScreen(id: dish.id!),
+                      ),
+                    );
+                  
+                }
+              },
             ),
           ],
         ),
@@ -231,5 +306,7 @@ class _DetailsDishState extends State<DetailsDish> {
         ),
       ),
     );
+    
   }
+  
 }
